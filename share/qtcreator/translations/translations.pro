@@ -96,7 +96,11 @@ updateqm.CONFIG += no_link
 QMAKE_EXTRA_COMPILERS += updateqm
 
 isEmpty(vcproj) {
-    QMAKE_LINK = @: IGNORE THIS LINE
+    os2 {
+        QMAKE_LINK = @rem IGNORE THIS LINE
+        QMAKE_EXEPACK = @rem IGNORE THIS LINE
+    }
+    else:QMAKE_LINK = @: IGNORE THIS LINE
     OBJECTS_DIR =
     win32:CONFIG -= embed_manifest_exe
 } else {
