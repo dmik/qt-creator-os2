@@ -4,7 +4,7 @@ QTCREATOR_PRI_INCLUDED = 1
 QTCREATOR_VERSION = 2.2.1
 
 defineReplace(cleanPath) {
-    win32:1 ~= s|\\\\|/|g
+    win32|os2:1 ~= s|\\\\|/|g
     contains(1, ^/.*):pfx = /
     else:pfx =
     segs = $$split(1, /)
@@ -26,7 +26,7 @@ defineReplace(qtLibraryName) {
    CONFIG(debug, debug|release) {
       !debug_and_release|build_pass {
           mac:RET = $$member(LIBRARY_NAME, 0)_debug
-              else:win32:RET = $$member(LIBRARY_NAME, 0)d
+              else:win32|os2:RET = $$member(LIBRARY_NAME, 0)d
       }
    }
    isEmpty(RET):RET = $$LIBRARY_NAME
@@ -56,7 +56,7 @@ defineTest(minQtVersion) {
 # For use in custom compilers which just copy files
 win32:i_flag = i
 defineReplace(stripSrcDir) {
-    win32 {
+    win32|os2 {
         !contains(1, ^.:.*):1 = $$OUT_PWD/$$1
     } else {
         !contains(1, ^/.*):1 = $$OUT_PWD/$$1
