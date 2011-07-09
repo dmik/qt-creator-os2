@@ -5,7 +5,7 @@ VERSION_TAG = $$replace(QTCREATOR_VERSION, "[-.]", )
 
 equals(QMAKE_DIR_SEP, /) {   # unix, mingw+msys
     QDOC = SRCDIR=$$PWD OUTDIR=$$OUT_PWD/doc/html QTC_VERSION=$$QTCREATOR_VERSION QTC_VERSION_TAG=$$VERSION_TAG $$QDOC_BIN
-} else:win32-g++* {   # just mingw
+} else:win32-g++*|os2 {   # just mingw or os2-g++
     # The lack of spaces in front of the && is necessary!
     QDOC = set SRCDIR=$$PWD&& set OUTDIR=$$OUT_PWD/doc/html&& set QTC_VERSION=$$QTCREATOR_VERSION&& set QTC_VERSION_TAG=$$VERSION_TAG&& $$QDOC_BIN
 } else {   # nmake
@@ -40,7 +40,7 @@ qch_docs.commands = $$HELPGENERATOR -o \"$$QCH_FILE\" $$QHP_FILE
 qch_docs.depends += html_docs
 qch_docs.files = $$QCH_FILE
 
-unix:!macx {
+unix:!macx|os2 {
     qch_docs.path = /share/doc/qtcreator
     qch_docs.CONFIG += no_check_exist
     INSTALLS += qch_docs
