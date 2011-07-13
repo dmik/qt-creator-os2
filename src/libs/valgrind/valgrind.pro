@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = Valgrind
+os2:TARGET_SHORT = Valgrnd
 
 include(../../qtcreatorlibrary.pri)
 include(../utils/utils.pri)

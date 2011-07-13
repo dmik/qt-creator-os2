@@ -1,4 +1,4 @@
-<plugin name=\"Qt4ProjectManager\" version=\"$$QTCREATOR_VERSION\" compatVersion=\"$$QTCREATOR_VERSION\">
+<plugin name=\"Qt4ProjectManager\" version=\"$$QTCREATOR_VERSION\" compatVersion=\"$$QTCREATOR_VERSION\" shortName=\"Qt4PMgr\">
     <vendor>Nokia Corporation</vendor>
     <copyright>(C) 2011 Nokia Corporation</copyright>
     <license>

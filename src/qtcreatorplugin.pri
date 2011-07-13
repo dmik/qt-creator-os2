@@ -70,4 +70,5 @@ linux*:QMAKE_LFLAGS += $$QMAKE_LFLAGS_NOUNDEF
 }
 
 TARGET = $$qtLibraryName($$TARGET)
+os2:!isEmpty(TARGET_SHORT): TARGET_SHORT = $$qtLibraryName($$TARGET_SHORT)
 

@@ -1,4 +1,5 @@
 TARGET = qtquickplugin
+os2:TARGET_SHORT = qtqckpl
 TEMPLATE = lib
 CONFIG += plugin
 

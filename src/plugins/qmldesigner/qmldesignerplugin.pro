@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = QmlDesigner
+os2:TARGET_SHORT = QmlDsgn
 
 include(../../qtcreatorplugin.pri)
 include(../../private_headers.pri)

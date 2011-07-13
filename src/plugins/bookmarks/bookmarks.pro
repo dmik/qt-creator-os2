@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET   = Bookmarks
+os2:TARGET_SHORT = BkMarks
 
 include(../../qtcreatorplugin.pri)
 include(../../plugins/projectexplorer/projectexplorer.pri)

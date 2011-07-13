@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = QmlJSInspector
+os2:TARGET_SHORT = QmlJsIn
 INCLUDEPATH += .
 DEPENDPATH += .
 QT += declarative network

@@ -1,4 +1,5 @@
 TARGET = Mercurial
+os2:TARGET_SHORT = Mercuri
 TEMPLATE = lib
 include(../../qtcreatorplugin.pri)
 include(mercurial_dependencies.pri)

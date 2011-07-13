@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = Designer
+os2:TARGET_SHORT = Designr
 DEFINES += DESIGNER_LIBRARY
 
 include(../../qtcreatorplugin.pri)

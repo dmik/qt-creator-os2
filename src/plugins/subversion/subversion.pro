@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = Subversion
+os2:TARGET_SHORT = Subvers
 
 include(../../qtcreatorplugin.pri)
 include(../../plugins/projectexplorer/projectexplorer.pri)

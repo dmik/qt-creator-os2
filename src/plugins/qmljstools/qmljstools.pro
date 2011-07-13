@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = QmlJSTools
+os2:TARGET_SHORT = QmlJsTl
 include(../../qtcreatorplugin.pri)
 include(qmljstools_dependencies.pri)
 

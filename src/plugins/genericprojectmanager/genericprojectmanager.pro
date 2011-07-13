@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = GenericProjectManager
+os2:TARGET_SHORT = GenPMgr
 include(../../qtcreatorplugin.pri)
 include(genericprojectmanager_dependencies.pri)
 HEADERS = genericproject.h \

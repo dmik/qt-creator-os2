@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = QmlProjectManager
+os2:TARGET_SHORT = QmlPMgr
 
 QT += declarative
 

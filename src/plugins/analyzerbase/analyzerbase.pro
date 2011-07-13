@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = AnalyzerBase
+os2:TARGET_SHORT = AnlzBse
 
 DEFINES += ANALYZER_LIBRARY
 

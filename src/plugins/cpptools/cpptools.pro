@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = CppTools
+os2:TARGET_SHORT = CppTool
 include(../../qtcreatorplugin.pri)
 include($$IDE_SOURCE_TREE/src/plugins/locator/locator.pri)
 include(cpptools_dependencies.pri)

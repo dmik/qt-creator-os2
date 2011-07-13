@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = BinEditor
+os2:TARGET_SHORT = BinEdit
 include(../../qtcreatorplugin.pri)
 include(bineditor_dependencies.pri)
 

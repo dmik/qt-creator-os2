@@ -1,4 +1,5 @@
 TARGET = meegoplugin
+os2:TARGET_SHORT = meegopl
 TEMPLATE = lib
 CONFIG += plugin
 

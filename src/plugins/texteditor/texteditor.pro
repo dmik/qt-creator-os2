@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = TextEditor
+os2:TARGET_SHORT = TxtEdit
 DEFINES += TEXTEDITOR_LIBRARY
 QT += xml network
 include(../../qtcreatorplugin.pri)

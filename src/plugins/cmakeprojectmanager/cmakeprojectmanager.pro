@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = CMakeProjectManager
+os2:TARGET_SHORT = CMkPMgr
 include(../../qtcreatorplugin.pri)
 include(cmakeprojectmanager_dependencies.pri)
 HEADERS = cmakeproject.h \

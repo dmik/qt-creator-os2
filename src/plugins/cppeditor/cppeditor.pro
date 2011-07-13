@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = CppEditor
+os2:TARGET_SHORT = CppEdit
 DEFINES += CPPEDITOR_LIBRARY
 include(../../qtcreatorplugin.pri)
 include($$IDE_SOURCE_TREE/src/libs/utils/utils.pri)

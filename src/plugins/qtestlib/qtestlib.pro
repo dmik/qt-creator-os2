@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET   = QTestLibPlugin
+os2:TARGET_SHORT = QTstLib
 QT      += xml
 
 include(../../qtcreatorplugin.pri)

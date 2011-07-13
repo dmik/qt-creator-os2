@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = ImageViewer
+os2:TARGET_SHORT = ImgView
 include(../../qtcreatorplugin.pri)
 include(imageviewer_dependencies.pri)
 

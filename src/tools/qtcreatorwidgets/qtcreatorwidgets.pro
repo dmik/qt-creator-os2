@@ -1,5 +1,6 @@
 CONFIG      += designer plugin debug_and_release
 TARGET      = $$qtLibraryTarget(qtcreatorwidgets)
+os2:TARGET_SHORT = $$qtLibraryTarget(qtcwdgt)
 TEMPLATE    = lib
 
 HEADERS     = customwidgets.h \

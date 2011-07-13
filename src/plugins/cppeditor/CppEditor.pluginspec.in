@@ -1,4 +1,4 @@
-<plugin name=\"CppEditor\" version=\"$$QTCREATOR_VERSION\" compatVersion=\"$$QTCREATOR_VERSION\">
+<plugin name=\"CppEditor\" version=\"$$QTCREATOR_VERSION\" compatVersion=\"$$QTCREATOR_VERSION\" shortName=\"CppEdit\">
     <vendor>Nokia Corporation</vendor>
     <copyright>(C) 2011 Nokia Corporation</copyright>
     <license>

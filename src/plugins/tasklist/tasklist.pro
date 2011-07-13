@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = TaskList
+os2:TARGET_SHORT = TskList
 
 include(../../qtcreatorplugin.pri)
 include(../../plugins/coreplugin/coreplugin.pri)

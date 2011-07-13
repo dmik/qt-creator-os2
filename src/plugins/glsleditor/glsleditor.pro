@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = GLSLEditor
+os2:TARGET_SHORT = GlslEdt
 include(../../qtcreatorplugin.pri)
 include(glsleditor_dependencies.pri)
 

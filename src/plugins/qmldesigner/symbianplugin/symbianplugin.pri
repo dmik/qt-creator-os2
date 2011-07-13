@@ -1,4 +1,5 @@
 TARGET = symbianplugin
+os2:TARGET_SHORT = symbnpl
 TEMPLATE = lib
 CONFIG += plugin
 

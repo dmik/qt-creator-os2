@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = ProjectExplorer
+os2:TARGET_SHORT = PrjXplr
 QT += xml \
     script \
     network

@@ -1,6 +1,7 @@
 QT += network
 TEMPLATE = lib
 TARGET = CodePaster
+os2:TARGET_SHORT = CodPstr
 include(../../qtcreatorplugin.pri)
 include(cpaster_dependencies.pri)
 HEADERS += cpasterplugin.h \

@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = Aggregation
+os2:TARGET_SHORT = Aggrega
 
 include(../../qtcreatorlibrary.pri)
 

@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = Memcheck
+os2:TARGET_SHORT = MemChk
 
 DEFINES += MEMCHECK_LIBRARY
 

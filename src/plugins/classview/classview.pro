@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = ClassView
+os2:TARGET_SHORT = ClsView
 include(../../qtcreatorplugin.pri)
 include(classview_dependencies.pri)
 

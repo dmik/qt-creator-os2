@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = ExtensionSystem
+os2:TARGET_SHORT = ExtSys
 DEFINES += EXTENSIONSYSTEM_LIBRARY
 include(../../qtcreatorlibrary.pri)
 include(extensionsystem_dependencies.pri)

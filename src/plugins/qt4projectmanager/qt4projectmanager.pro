@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = Qt4ProjectManager
+os2:TARGET_SHORT = Qt4PMgr
 DEFINES += QT_CREATOR QT4PROJECTMANAGER_LIBRARY
 QT += network
 include(../../qtcreatorplugin.pri)

@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = Perforce
+os2:TARGET_SHORT = Perfrce
 
 include(../../qtcreatorplugin.pri)
 include(perforce_dependencies.pri)

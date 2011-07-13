@@ -1,5 +1,6 @@
 TEMPLATE = lib
 TARGET = ResourceEditor
+os2:TARGET_SHORT = ResEdit
 
 qtAddLibrary(QtDesigner)
 
