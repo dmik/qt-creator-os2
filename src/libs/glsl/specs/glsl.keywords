@@ -2,7 +2,7 @@
 #include "glslparser.h"
 
 %no-enums
-%token-prefix=T_
+%token-prefix=TOK_
 %toupper
 %namespace=Parser
 %lexer-class=Lexer

@@ -94,13 +94,13 @@ public:
     ~Parser();
 
     TranslationUnitAST *parse() {
-        if (AST *u = parse(T_FEED_GLSL))
+        if (AST *u = parse(TOK_FEED_GLSL))
             return u->asTranslationUnit();
         return 0;
     }
 
     ExpressionAST *parseExpression() {
-        if (AST *u = parse(T_FEED_EXPRESSION))
+        if (AST *u = parse(TOK_FEED_EXPRESSION))
             return u->asExpression();
         return 0;
     }

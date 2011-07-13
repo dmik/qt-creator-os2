@@ -260,7 +260,7 @@ class GLSL_EXPORT SamplerType: public Type
 public:
     explicit SamplerType(int kind) : _kind(kind) {}
 
-    // Kind of sampler as a token code; e.g. T_SAMPLER2D.
+    // Kind of sampler as a token code; e.g. TOK_SAMPLER2D.
     int kind() const { return _kind; }
 
     virtual QString toString() const;

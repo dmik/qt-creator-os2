@@ -33,7 +33,7 @@
 %decl glslparser.h
 %impl glslparser.cpp
 %parser GLSLParserTable
-%token_prefix T_
+%token_prefix TOK_
 %expect 1
 
 %token FEED_GLSL "feed GLSL"
@@ -308,13 +308,13 @@ public:
     ~Parser();
 
     TranslationUnitAST *parse() {
-        if (AST *u = parse(T_FEED_GLSL))
+        if (AST *u = parse(TOK_FEED_GLSL))
             return u->asTranslationUnit();
         return 0;
     }
 
     ExpressionAST *parseExpression() {
-        if (AST *u = parse(T_FEED_EXPRESSION))
+        if (AST *u = parse(TOK_FEED_EXPRESSION))
             return u->asExpression();
         return 0;
     }
@@ -488,29 +488,29 @@ Parser::Parser(Engine *engine, const char *source, unsigned size, int variant)
         lexer.yylex(&tk);
 
         switch (tk.kind) {
-        case T_LEFT_PAREN:
+        case TOK_LEFT_PAREN:
             parenStack.push(_tokens.size());
             break;
-        case T_LEFT_BRACKET:
+        case TOK_LEFT_BRACKET:
             bracketStack.push(_tokens.size());
             break;
-        case T_LEFT_BRACE:
+        case TOK_LEFT_BRACE:
             braceStack.push(_tokens.size());
             break;
 
-        case T_RIGHT_PAREN:
+        case TOK_RIGHT_PAREN:
             if (! parenStack.empty()) {
                 _tokens[parenStack.top()].matchingBrace = _tokens.size();
                 parenStack.pop();
             }
             break;
-        case T_RIGHT_BRACKET:
+        case TOK_RIGHT_BRACKET:
             if (! bracketStack.empty()) {
                 _tokens[bracketStack.top()].matchingBrace = _tokens.size();
                 bracketStack.pop();
             }
             break;
-        case T_RIGHT_BRACE:
+        case TOK_RIGHT_BRACE:
             if (! braceStack.empty()) {
                 _tokens[braceStack.top()].matchingBrace = _tokens.size();
                 braceStack.pop();
@@ -556,14 +556,14 @@ AST *Parser::parse(int startToken)
             yytoken = tokenKind(yyloc);
             if (yyrecovering)
                 --yyrecovering;
-            if (yytoken == T_IDENTIFIER && t_action(action, T_TYPE_NAME) != 0) {
+            if (yytoken == TOK_IDENTIFIER && t_action(action, TOK_TYPE_NAME) != 0) {
                 const Token &la = tokenAt(_index);
 
-                if (la.is(T_IDENTIFIER)) {
-                    yytoken = T_TYPE_NAME;
-                } else if (la.is(T_LEFT_BRACKET) && la.matchingBrace != 0 &&
-                           tokenAt(la.matchingBrace + 1).is(T_IDENTIFIER)) {
-                    yytoken = T_TYPE_NAME;
+                if (la.is(TOK_IDENTIFIER)) {
+                    yytoken = TOK_TYPE_NAME;
+                } else if (la.is(TOK_LEFT_BRACKET) && la.matchingBrace != 0 &&
+                           tokenAt(la.matchingBrace + 1).is(TOK_IDENTIFIER)) {
+                    yytoken = TOK_TYPE_NAME;
                 }
             }
             yyval = _tokens.at(yyloc).ptr;
@@ -596,11 +596,11 @@ AST *Parser::parse(int startToken)
                 const int state = _stateStack[_tos];
 
                 static int tks[] = {
-                    T_RIGHT_BRACE, T_RIGHT_PAREN, T_RIGHT_BRACKET,
-                    T_SEMICOLON, T_COMMA, T_COLON,
-                    T_NUMBER, T_TYPE_NAME, T_IDENTIFIER,
-                    T_LEFT_BRACE, T_LEFT_PAREN, T_LEFT_BRACKET,
-                    T_WHILE,
+                    TOK_RIGHT_BRACE, TOK_RIGHT_PAREN, TOK_RIGHT_BRACKET,
+                    TOK_SEMICOLON, TOK_COMMA, TOK_COLON,
+                    TOK_NUMBER, TOK_TYPE_NAME, TOK_IDENTIFIER,
+                    TOK_LEFT_BRACE, TOK_LEFT_PAREN, TOK_LEFT_BRACKET,
+                    TOK_WHILE,
                     0
                 };
 
@@ -613,9 +613,9 @@ AST *Parser::parse(int startToken)
                         }
 
                         yyrecovering = 3;
-                        if (*tptr == T_IDENTIFIER)
+                        if (*tptr == TOK_IDENTIFIER)
                             yyval = (void *) _engine->identifier(QLatin1String("$identifier"));
-                        else if (*tptr == T_NUMBER || *tptr == T_TYPE_NAME)
+                        else if (*tptr == TOK_NUMBER || *tptr == TOK_TYPE_NAME)
                             yyval = (void *) _engine->identifier(QLatin1String("$0"));
                         else
                             yyval = 0;
@@ -1884,595 +1884,595 @@ case $rule_number: {
 type_specifier_nonarray ::= VOID ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_VOID);
+    ast(1) = makeBasicType(TOK_VOID);
 }   break;
 ./
 
 type_specifier_nonarray ::= FLOAT ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_FLOAT);
+    ast(1) = makeBasicType(TOK_FLOAT);
 }   break;
 ./
 
 type_specifier_nonarray ::= DOUBLE ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_DOUBLE);
+    ast(1) = makeBasicType(TOK_DOUBLE);
 }   break;
 ./
 
 type_specifier_nonarray ::= INT ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_INT);
+    ast(1) = makeBasicType(TOK_INT);
 }   break;
 ./
 
 type_specifier_nonarray ::= UINT ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_UINT);
+    ast(1) = makeBasicType(TOK_UINT);
 }   break;
 ./
 
 type_specifier_nonarray ::= BOOL ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_BOOL);
+    ast(1) = makeBasicType(TOK_BOOL);
 }   break;
 ./
 
 type_specifier_nonarray ::= VEC2 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_VEC2);
+    ast(1) = makeBasicType(TOK_VEC2);
 }   break;
 ./
 
 type_specifier_nonarray ::= VEC3 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_VEC3);
+    ast(1) = makeBasicType(TOK_VEC3);
 }   break;
 ./
 
 type_specifier_nonarray ::= VEC4 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_VEC4);
+    ast(1) = makeBasicType(TOK_VEC4);
 }   break;
 ./
 
 type_specifier_nonarray ::= DVEC2 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_DVEC2);
+    ast(1) = makeBasicType(TOK_DVEC2);
 }   break;
 ./
 
 type_specifier_nonarray ::= DVEC3 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_DVEC3);
+    ast(1) = makeBasicType(TOK_DVEC3);
 }   break;
 ./
 
 type_specifier_nonarray ::= DVEC4 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_DVEC4);
+    ast(1) = makeBasicType(TOK_DVEC4);
 }   break;
 ./
 
 type_specifier_nonarray ::= BVEC2 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_BVEC2);
+    ast(1) = makeBasicType(TOK_BVEC2);
 }   break;
 ./
 
 type_specifier_nonarray ::= BVEC3 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_BVEC3);
+    ast(1) = makeBasicType(TOK_BVEC3);
 }   break;
 ./
 
 type_specifier_nonarray ::= BVEC4 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_BVEC4);
+    ast(1) = makeBasicType(TOK_BVEC4);
 }   break;
 ./
 
 type_specifier_nonarray ::= IVEC2 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_IVEC2);
+    ast(1) = makeBasicType(TOK_IVEC2);
 }   break;
 ./
 
 type_specifier_nonarray ::= IVEC3 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_IVEC3);
+    ast(1) = makeBasicType(TOK_IVEC3);
 }   break;
 ./
 
 type_specifier_nonarray ::= IVEC4 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_IVEC4);
+    ast(1) = makeBasicType(TOK_IVEC4);
 }   break;
 ./
 
 type_specifier_nonarray ::= UVEC2 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_UVEC2);
+    ast(1) = makeBasicType(TOK_UVEC2);
 }   break;
 ./
 
 type_specifier_nonarray ::= UVEC3 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_UVEC3);
+    ast(1) = makeBasicType(TOK_UVEC3);
 }   break;
 ./
 
 type_specifier_nonarray ::= UVEC4 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_UVEC4);
+    ast(1) = makeBasicType(TOK_UVEC4);
 }   break;
 ./
 
 type_specifier_nonarray ::= MAT2 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_MAT2);
+    ast(1) = makeBasicType(TOK_MAT2);
 }   break;
 ./
 
 type_specifier_nonarray ::= MAT3 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_MAT3);
+    ast(1) = makeBasicType(TOK_MAT3);
 }   break;
 ./
 
 type_specifier_nonarray ::= MAT4 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_MAT4);
+    ast(1) = makeBasicType(TOK_MAT4);
 }   break;
 ./
 
 type_specifier_nonarray ::= MAT2X2 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_MAT2);
+    ast(1) = makeBasicType(TOK_MAT2);
 }   break;
 ./
 
 type_specifier_nonarray ::= MAT2X3 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_MAT2X3);
+    ast(1) = makeBasicType(TOK_MAT2X3);
 }   break;
 ./
 
 type_specifier_nonarray ::= MAT2X4 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_MAT2X4);
+    ast(1) = makeBasicType(TOK_MAT2X4);
 }   break;
 ./
 
 type_specifier_nonarray ::= MAT3X2 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_MAT3X2);
+    ast(1) = makeBasicType(TOK_MAT3X2);
 }   break;
 ./
 
 type_specifier_nonarray ::= MAT3X3 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_MAT3);
+    ast(1) = makeBasicType(TOK_MAT3);
 }   break;
 ./
 
 type_specifier_nonarray ::= MAT3X4 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_MAT3X4);
+    ast(1) = makeBasicType(TOK_MAT3X4);
 }   break;
 ./
 
 type_specifier_nonarray ::= MAT4X2 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_MAT4X2);
+    ast(1) = makeBasicType(TOK_MAT4X2);
 }   break;
 ./
 
 type_specifier_nonarray ::= MAT4X3 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_MAT4X3);
+    ast(1) = makeBasicType(TOK_MAT4X3);
 }   break;
 ./
 
 type_specifier_nonarray ::= MAT4X4 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_MAT4);
+    ast(1) = makeBasicType(TOK_MAT4);
 }   break;
 ./
 
 type_specifier_nonarray ::= DMAT2 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_DMAT2);
+    ast(1) = makeBasicType(TOK_DMAT2);
 }   break;
 ./
 
 type_specifier_nonarray ::= DMAT3 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_DMAT3);
+    ast(1) = makeBasicType(TOK_DMAT3);
 }   break;
 ./
 
 type_specifier_nonarray ::= DMAT4 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_DMAT4);
+    ast(1) = makeBasicType(TOK_DMAT4);
 }   break;
 ./
 
 type_specifier_nonarray ::= DMAT2X2 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_DMAT2);
+    ast(1) = makeBasicType(TOK_DMAT2);
 }   break;
 ./
 
 type_specifier_nonarray ::= DMAT2X3 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_DMAT2X3);
+    ast(1) = makeBasicType(TOK_DMAT2X3);
 }   break;
 ./
 
 type_specifier_nonarray ::= DMAT2X4 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_DMAT2X4);
+    ast(1) = makeBasicType(TOK_DMAT2X4);
 }   break;
 ./
 
 type_specifier_nonarray ::= DMAT3X2 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_DMAT3X2);
+    ast(1) = makeBasicType(TOK_DMAT3X2);
 }   break;
 ./
 
 type_specifier_nonarray ::= DMAT3X3 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_DMAT3);
+    ast(1) = makeBasicType(TOK_DMAT3);
 }   break;
 ./
 
 type_specifier_nonarray ::= DMAT3X4 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_DMAT3X4);
+    ast(1) = makeBasicType(TOK_DMAT3X4);
 }   break;
 ./
 
 type_specifier_nonarray ::= DMAT4X2 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_DMAT4X2);
+    ast(1) = makeBasicType(TOK_DMAT4X2);
 }   break;
 ./
 
 type_specifier_nonarray ::= DMAT4X3 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_DMAT4X3);
+    ast(1) = makeBasicType(TOK_DMAT4X3);
 }   break;
 ./
 
 type_specifier_nonarray ::= DMAT4X4 ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_DMAT4);
+    ast(1) = makeBasicType(TOK_DMAT4);
 }   break;
 ./
 
 type_specifier_nonarray ::= SAMPLER1D ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_SAMPLER1D);
+    ast(1) = makeBasicType(TOK_SAMPLER1D);
 }   break;
 ./
 
 type_specifier_nonarray ::= SAMPLER2D ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_SAMPLER2D);
+    ast(1) = makeBasicType(TOK_SAMPLER2D);
 }   break;
 ./
 
 type_specifier_nonarray ::= SAMPLER3D ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_SAMPLER3D);
+    ast(1) = makeBasicType(TOK_SAMPLER3D);
 }   break;
 ./
 
 type_specifier_nonarray ::= SAMPLERCUBE ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_SAMPLERCUBE);
+    ast(1) = makeBasicType(TOK_SAMPLERCUBE);
 }   break;
 ./
 
 type_specifier_nonarray ::= SAMPLER1DSHADOW ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_SAMPLER1DSHADOW);
+    ast(1) = makeBasicType(TOK_SAMPLER1DSHADOW);
 }   break;
 ./
 
 type_specifier_nonarray ::= SAMPLER2DSHADOW ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_SAMPLER2DSHADOW);
+    ast(1) = makeBasicType(TOK_SAMPLER2DSHADOW);
 }   break;
 ./
 
 type_specifier_nonarray ::= SAMPLERCUBESHADOW ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_SAMPLERCUBESHADOW);
+    ast(1) = makeBasicType(TOK_SAMPLERCUBESHADOW);
 }   break;
 ./
 
 type_specifier_nonarray ::= SAMPLER1DARRAY ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_SAMPLER1DARRAY);
+    ast(1) = makeBasicType(TOK_SAMPLER1DARRAY);
 }   break;
 ./
 
 type_specifier_nonarray ::= SAMPLER2DARRAY ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_SAMPLER2DARRAY);
+    ast(1) = makeBasicType(TOK_SAMPLER2DARRAY);
 }   break;
 ./
 
 type_specifier_nonarray ::= SAMPLER1DARRAYSHADOW ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_SAMPLER1DARRAYSHADOW);
+    ast(1) = makeBasicType(TOK_SAMPLER1DARRAYSHADOW);
 }   break;
 ./
 
 type_specifier_nonarray ::= SAMPLER2DARRAYSHADOW ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_SAMPLER2DARRAYSHADOW);
+    ast(1) = makeBasicType(TOK_SAMPLER2DARRAYSHADOW);
 }   break;
 ./
 
 type_specifier_nonarray ::= SAMPLERCUBEARRAY ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_SAMPLERCUBEARRAY);
+    ast(1) = makeBasicType(TOK_SAMPLERCUBEARRAY);
 }   break;
 ./
 
 type_specifier_nonarray ::= SAMPLERCUBEARRAYSHADOW ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_SAMPLERCUBEARRAYSHADOW);
+    ast(1) = makeBasicType(TOK_SAMPLERCUBEARRAYSHADOW);
 }   break;
 ./
 
 type_specifier_nonarray ::= ISAMPLER1D ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_ISAMPLER1D);
+    ast(1) = makeBasicType(TOK_ISAMPLER1D);
 }   break;
 ./
 
 type_specifier_nonarray ::= ISAMPLER2D ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_ISAMPLER2D);
+    ast(1) = makeBasicType(TOK_ISAMPLER2D);
 }   break;
 ./
 
 type_specifier_nonarray ::= ISAMPLER3D ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_ISAMPLER3D);
+    ast(1) = makeBasicType(TOK_ISAMPLER3D);
 }   break;
 ./
 
 type_specifier_nonarray ::= ISAMPLERCUBE ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_ISAMPLERCUBE);
+    ast(1) = makeBasicType(TOK_ISAMPLERCUBE);
 }   break;
 ./
 
 type_specifier_nonarray ::= ISAMPLER1DARRAY ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_ISAMPLER1DARRAY);
+    ast(1) = makeBasicType(TOK_ISAMPLER1DARRAY);
 }   break;
 ./
 
 type_specifier_nonarray ::= ISAMPLER2DARRAY ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_ISAMPLER2DARRAY);
+    ast(1) = makeBasicType(TOK_ISAMPLER2DARRAY);
 }   break;
 ./
 
 type_specifier_nonarray ::= ISAMPLERCUBEARRAY ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_ISAMPLERCUBEARRAY);
+    ast(1) = makeBasicType(TOK_ISAMPLERCUBEARRAY);
 }   break;
 ./
 
 type_specifier_nonarray ::= USAMPLER1D ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_USAMPLER1D);
+    ast(1) = makeBasicType(TOK_USAMPLER1D);
 }   break;
 ./
 
 type_specifier_nonarray ::= USAMPLER2D ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_USAMPLER2D);
+    ast(1) = makeBasicType(TOK_USAMPLER2D);
 }   break;
 ./
 
 type_specifier_nonarray ::= USAMPLER3D ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_USAMPLER3D);
+    ast(1) = makeBasicType(TOK_USAMPLER3D);
 }   break;
 ./
 
 type_specifier_nonarray ::= USAMPLERCUBE ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_USAMPLERCUBE);
+    ast(1) = makeBasicType(TOK_USAMPLERCUBE);
 }   break;
 ./
 
 type_specifier_nonarray ::= USAMPLER1DARRAY ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_USAMPLER1DARRAY);
+    ast(1) = makeBasicType(TOK_USAMPLER1DARRAY);
 }   break;
 ./
 
 type_specifier_nonarray ::= USAMPLER2DARRAY ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_USAMPLER2DARRAY);
+    ast(1) = makeBasicType(TOK_USAMPLER2DARRAY);
 }   break;
 ./
 
 type_specifier_nonarray ::= USAMPLERCUBEARRAY ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_USAMPLERCUBEARRAY);
+    ast(1) = makeBasicType(TOK_USAMPLERCUBEARRAY);
 }   break;
 ./
 
 type_specifier_nonarray ::= SAMPLER2DRECT ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_SAMPLER2DRECT);
+    ast(1) = makeBasicType(TOK_SAMPLER2DRECT);
 }   break;
 ./
 
 type_specifier_nonarray ::= SAMPLER2DRECTSHADOW ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_SAMPLER2DRECTSHADOW);
+    ast(1) = makeBasicType(TOK_SAMPLER2DRECTSHADOW);
 }   break;
 ./
 
 type_specifier_nonarray ::= ISAMPLER2DRECT ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_ISAMPLER2DRECT);
+    ast(1) = makeBasicType(TOK_ISAMPLER2DRECT);
 }   break;
 ./
 
 type_specifier_nonarray ::= USAMPLER2DRECT ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_USAMPLER2DRECT);
+    ast(1) = makeBasicType(TOK_USAMPLER2DRECT);
 }   break;
 ./
 
 type_specifier_nonarray ::= SAMPLERBUFFER ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_SAMPLERBUFFER);
+    ast(1) = makeBasicType(TOK_SAMPLERBUFFER);
 }   break;
 ./
 
 type_specifier_nonarray ::= ISAMPLERBUFFER ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_ISAMPLERBUFFER);
+    ast(1) = makeBasicType(TOK_ISAMPLERBUFFER);
 }   break;
 ./
 
 type_specifier_nonarray ::= USAMPLERBUFFER ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_USAMPLERBUFFER);
+    ast(1) = makeBasicType(TOK_USAMPLERBUFFER);
 }   break;
 ./
 
 type_specifier_nonarray ::= SAMPLER2DMS ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_SAMPLER2DMS);
+    ast(1) = makeBasicType(TOK_SAMPLER2DMS);
 }   break;
 ./
 
 type_specifier_nonarray ::= ISAMPLER2DMS ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_ISAMPLER2DMS);
+    ast(1) = makeBasicType(TOK_ISAMPLER2DMS);
 }   break;
 ./
 
 type_specifier_nonarray ::= USAMPLER2DMS ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_USAMPLER2DMS);
+    ast(1) = makeBasicType(TOK_USAMPLER2DMS);
 }   break;
 ./
 
 type_specifier_nonarray ::= SAMPLER2DMSARRAY ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_SAMPLER2DMSARRAY);
+    ast(1) = makeBasicType(TOK_SAMPLER2DMSARRAY);
 }   break;
 ./
 
 type_specifier_nonarray ::= ISAMPLER2DMSARRAY ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_ISAMPLER2DMSARRAY);
+    ast(1) = makeBasicType(TOK_ISAMPLER2DMSARRAY);
 }   break;
 ./
 
 type_specifier_nonarray ::= USAMPLER2DMSARRAY ;
 /.
 case $rule_number: {
-    ast(1) = makeBasicType(T_USAMPLER2DMSARRAY);
+    ast(1) = makeBasicType(TOK_USAMPLER2DMSARRAY);
 }   break;
 ./
 

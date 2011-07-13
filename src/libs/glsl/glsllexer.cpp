@@ -109,7 +109,7 @@ int Lexer::yylex_helper(const char **position, int *line)
                 yyinp();
             }
         }
-        return Parser::T_COMMENT;
+        return Parser::TOK_COMMENT;
     }
 
     const int ch = _yychar;
@@ -127,9 +127,9 @@ int Lexer::yylex_helper(const char **position, int *line)
     case '!':
         if (_yychar == '=') {
             yyinp();
-            return Parser::T_NE_OP;
+            return Parser::TOK_NE_OP;
         }
-        return Parser::T_BANG;
+        return Parser::TOK_BANG;
 
         // one of
         //  %
@@ -137,9 +137,9 @@ int Lexer::yylex_helper(const char **position, int *line)
     case '%':
         if (_yychar == '=') {
             yyinp();
-            return Parser::T_MOD_ASSIGN;
+            return Parser::TOK_MOD_ASSIGN;
         }
-        return Parser::T_PERCENT;
+        return Parser::TOK_PERCENT;
 
         // one of
         // &
@@ -148,20 +148,20 @@ int Lexer::yylex_helper(const char **position, int *line)
     case '&':
         if (_yychar == '=') {
             yyinp();
-            return Parser::T_AND_ASSIGN;
+            return Parser::TOK_AND_ASSIGN;
         } else if (_yychar == '&') {
             yyinp();
-            return Parser::T_AND_OP;
+            return Parser::TOK_AND_OP;
         }
-        return Parser::T_AMPERSAND;
+        return Parser::TOK_AMPERSAND;
 
         // (
     case '(':
-        return Parser::T_LEFT_PAREN;
+        return Parser::TOK_LEFT_PAREN;
 
         // )
     case ')':
-        return Parser::T_RIGHT_PAREN;
+        return Parser::TOK_RIGHT_PAREN;
 
         // one of
         // *
@@ -169,9 +169,9 @@ int Lexer::yylex_helper(const char **position, int *line)
     case '*':
         if (_yychar == '=') {
             yyinp();
-            return Parser::T_MUL_ASSIGN;
+            return Parser::TOK_MUL_ASSIGN;
         }
-        return Parser::T_STAR;
+        return Parser::TOK_STAR;
 
         // one of
         // ++
@@ -180,16 +180,16 @@ int Lexer::yylex_helper(const char **position, int *line)
     case '+':
         if (_yychar == '=') {
             yyinp();
-            return Parser::T_ADD_ASSIGN;
+            return Parser::TOK_ADD_ASSIGN;
         } else if (_yychar == '+') {
             yyinp();
-            return Parser::T_INC_OP;
+            return Parser::TOK_INC_OP;
         }
-        return Parser::T_PLUS;
+        return Parser::TOK_PLUS;
 
         // ,
     case ',':
-        return Parser::T_COMMA;
+        return Parser::TOK_COMMA;
 
         // one of
         // -
@@ -198,12 +198,12 @@ int Lexer::yylex_helper(const char **position, int *line)
     case '-':
         if (_yychar == '=') {
             yyinp();
-            return Parser::T_SUB_ASSIGN;
+            return Parser::TOK_SUB_ASSIGN;
         } else if (_yychar == '-') {
             yyinp();
-            return Parser::T_DEC_OP;
+            return Parser::TOK_DEC_OP;
         }
-        return Parser::T_DASH;
+        return Parser::TOK_DASH;
 
         // one of
         // .
@@ -216,9 +216,9 @@ int Lexer::yylex_helper(const char **position, int *line)
             }
             if (_engine)
                 _yyval.string = _engine->number(word, _it - word - 1);
-            return Parser::T_NUMBER;
+            return Parser::TOK_NUMBER;
         }
-        return Parser::T_DOT;
+        return Parser::TOK_DOT;
 
         // one of
         // /
@@ -231,7 +231,7 @@ int Lexer::yylex_helper(const char **position, int *line)
                     break;
             }
             if (_scanComments)
-                return Parser::T_COMMENT;
+                return Parser::TOK_COMMENT;
             goto again;
         } else if (_yychar == '*') {
             yyinp();
@@ -241,7 +241,7 @@ int Lexer::yylex_helper(const char **position, int *line)
                     if (_yychar == '/') {
                         yyinp();
                         if (_scanComments)
-                            return Parser::T_COMMENT;
+                            return Parser::TOK_COMMENT;
                         goto again;
                     }
                 } else {
@@ -250,22 +250,22 @@ int Lexer::yylex_helper(const char **position, int *line)
             }
             if (_scanComments) {
                 _state = State_comment;
-                return Parser::T_COMMENT;
+                return Parser::TOK_COMMENT;
             }
             goto again;
         } else if (_yychar == '=') {
             yyinp();
-            return Parser::T_DIV_ASSIGN;
+            return Parser::TOK_DIV_ASSIGN;
         }
-        return Parser::T_SLASH;
+        return Parser::TOK_SLASH;
 
         // :
     case ':':
-        return Parser::T_COLON;
+        return Parser::TOK_COLON;
 
         // ;
     case ';':
-        return Parser::T_SEMICOLON;
+        return Parser::TOK_SEMICOLON;
 
         // one of
         // <
@@ -275,16 +275,16 @@ int Lexer::yylex_helper(const char **position, int *line)
     case '<':
         if (_yychar == '=') {
             yyinp();
-            return Parser::T_LE_OP;
+            return Parser::TOK_LE_OP;
         } else if (_yychar == '<') {
             yyinp();
             if (_yychar == '=') {
                 yyinp();
-                return Parser::T_LEFT_ASSIGN;
+                return Parser::TOK_LEFT_ASSIGN;
             }
-            return Parser::T_LEFT_OP;
+            return Parser::TOK_LEFT_OP;
         }
-        return Parser::T_LEFT_ANGLE;
+        return Parser::TOK_LEFT_ANGLE;
 
         // one of
         // =
@@ -292,9 +292,9 @@ int Lexer::yylex_helper(const char **position, int *line)
     case '=':
         if (_yychar == '=') {
             yyinp();
-            return Parser::T_EQ_OP;
+            return Parser::TOK_EQ_OP;
         }
-        return Parser::T_EQUAL;
+        return Parser::TOK_EQUAL;
 
         // one of
         // >
@@ -304,28 +304,28 @@ int Lexer::yylex_helper(const char **position, int *line)
     case '>':
         if (_yychar == '=') {
             yyinp();
-            return Parser::T_GE_OP;
+            return Parser::TOK_GE_OP;
         } else if (_yychar == '>') {
             yyinp();
             if (_yychar == '=') {
                 yyinp();
-                return Parser::T_RIGHT_ASSIGN;
+                return Parser::TOK_RIGHT_ASSIGN;
             }
-            return Parser::T_RIGHT_OP;
+            return Parser::TOK_RIGHT_OP;
         }
-        return Parser::T_RIGHT_ANGLE;
+        return Parser::TOK_RIGHT_ANGLE;
 
         // ?
     case '?':
-        return Parser::T_QUESTION;
+        return Parser::TOK_QUESTION;
 
         // [
     case '[':
-        return Parser::T_LEFT_BRACKET;
+        return Parser::TOK_LEFT_BRACKET;
 
         // ]
     case ']':
-        return Parser::T_RIGHT_BRACKET;
+        return Parser::TOK_RIGHT_BRACKET;
 
         // one of
         // ^
@@ -333,16 +333,16 @@ int Lexer::yylex_helper(const char **position, int *line)
     case '^':
         if (_yychar == '=') {
             yyinp();
-            return Parser::T_XOR_ASSIGN;
+            return Parser::TOK_XOR_ASSIGN;
         } else if (_yychar == '^') {
             yyinp();
-            return Parser::T_XOR_OP;
+            return Parser::TOK_XOR_OP;
         }
-        return Parser::T_CARET;
+        return Parser::TOK_CARET;
 
         // {
     case '{':
-        return Parser::T_LEFT_BRACE;
+        return Parser::TOK_LEFT_BRACE;
 
         // one of
         // |
@@ -351,20 +351,20 @@ int Lexer::yylex_helper(const char **position, int *line)
     case '|':
         if (_yychar == '=') {
             yyinp();
-            return Parser::T_OR_ASSIGN;
+            return Parser::TOK_OR_ASSIGN;
         } else if (_yychar == '|') {
             yyinp();
-            return Parser::T_OR_OP;
+            return Parser::TOK_OR_OP;
         }
-        return Parser::T_VERTICAL_BAR;
+        return Parser::TOK_VERTICAL_BAR;
 
         // }
     case '}':
-        return Parser::T_RIGHT_BRACE;
+        return Parser::TOK_RIGHT_BRACE;
 
         // ~
     case '~':
-        return Parser::T_TILDE;
+        return Parser::TOK_TILDE;
 
     default:
         if (std::isalpha(ch) || ch == '_') {
@@ -375,12 +375,12 @@ int Lexer::yylex_helper(const char **position, int *line)
             if (_scanKeywords) {
                 const int k = findKeyword(word, _it - word - 1);
 
-                if (k != Parser::T_IDENTIFIER)
+                if (k != Parser::TOK_IDENTIFIER)
                     return k;
             }
             if (_engine)
                 _yyval.string = _engine->identifier(word, _it - word - 1);
-            return Parser::T_IDENTIFIER;
+            return Parser::TOK_IDENTIFIER;
         } else if (std::isdigit(ch)) {
             const char *word = _it - 2;
             while (std::isalnum(_yychar) || _yychar == '.') {
@@ -388,12 +388,12 @@ int Lexer::yylex_helper(const char **position, int *line)
             }
             if (_engine)
                 _yyval.string = _engine->number(word, _it - word - 1);
-            return Parser::T_NUMBER;
+            return Parser::TOK_NUMBER;
         }
 
     } // switch
 
-    return Parser::T_ERROR;
+    return Parser::TOK_ERROR;
 }
 
 int Lexer::findKeyword(const char *word, int length) const
@@ -406,7 +406,7 @@ int Lexer::findKeyword(const char *word, int length) const
         // in the current language variant so that the syntax highlighter
         // can warn the user about the word.
         if (!_scanKeywords)
-            return Parser::T_RESERVED;
+            return Parser::TOK_RESERVED;
     }
     return t & ~Variant_Mask;
 }

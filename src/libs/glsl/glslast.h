@@ -692,7 +692,7 @@ public:
 class GLSL_EXPORT BasicTypeAST: public TypeAST
 {
 public:
-    // Pass the parser's token code: T_VOID, T_VEC4, etc.
+    // Pass the parser's token code: TOK_VOID, TOK_VEC4, etc.
     BasicTypeAST(int _token, const char *_name);
 
     virtual BasicTypeAST *asBasicType() { return this; }

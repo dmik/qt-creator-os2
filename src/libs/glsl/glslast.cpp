@@ -229,11 +229,11 @@ BasicTypeAST::BasicTypeAST(int _token, const char *_name)
     : TypeAST(Kind_BasicType), token(_token), name(_name)
 {
     switch (token) {
-    case GLSLParserTable::T_VOID:
-    case GLSLParserTable::T_BOOL:
-    case GLSLParserTable::T_BVEC2:
-    case GLSLParserTable::T_BVEC3:
-    case GLSLParserTable::T_BVEC4:
+    case GLSLParserTable::TOK_VOID:
+    case GLSLParserTable::TOK_BOOL:
+    case GLSLParserTable::TOK_BVEC2:
+    case GLSLParserTable::TOK_BVEC3:
+    case GLSLParserTable::TOK_BVEC4:
         prec = PrecNotValid;
         break;
     default:

@@ -64,29 +64,29 @@ Parser::Parser(Engine *engine, const char *source, unsigned size, int variant)
         lexer.yylex(&tk);
 
         switch (tk.kind) {
-        case T_LEFT_PAREN:
+        case TOK_LEFT_PAREN:
             parenStack.push(_tokens.size());
             break;
-        case T_LEFT_BRACKET:
+        case TOK_LEFT_BRACKET:
             bracketStack.push(_tokens.size());
             break;
-        case T_LEFT_BRACE:
+        case TOK_LEFT_BRACE:
             braceStack.push(_tokens.size());
             break;
 
-        case T_RIGHT_PAREN:
+        case TOK_RIGHT_PAREN:
             if (! parenStack.empty()) {
                 _tokens[parenStack.top()].matchingBrace = _tokens.size();
                 parenStack.pop();
             }
             break;
-        case T_RIGHT_BRACKET:
+        case TOK_RIGHT_BRACKET:
             if (! bracketStack.empty()) {
                 _tokens[bracketStack.top()].matchingBrace = _tokens.size();
                 bracketStack.pop();
             }
             break;
-        case T_RIGHT_BRACE:
+        case TOK_RIGHT_BRACE:
             if (! braceStack.empty()) {
                 _tokens[braceStack.top()].matchingBrace = _tokens.size();
                 braceStack.pop();
@@ -132,14 +132,14 @@ AST *Parser::parse(int startToken)
             yytoken = tokenKind(yyloc);
             if (yyrecovering)
                 --yyrecovering;
-            if (yytoken == T_IDENTIFIER && t_action(action, T_TYPE_NAME) != 0) {
+            if (yytoken == TOK_IDENTIFIER && t_action(action, TOK_TYPE_NAME) != 0) {
                 const Token &la = tokenAt(_index);
 
-                if (la.is(T_IDENTIFIER)) {
-                    yytoken = T_TYPE_NAME;
-                } else if (la.is(T_LEFT_BRACKET) && la.matchingBrace != 0 &&
-                           tokenAt(la.matchingBrace + 1).is(T_IDENTIFIER)) {
-                    yytoken = T_TYPE_NAME;
+                if (la.is(TOK_IDENTIFIER)) {
+                    yytoken = TOK_TYPE_NAME;
+                } else if (la.is(TOK_LEFT_BRACKET) && la.matchingBrace != 0 &&
+                           tokenAt(la.matchingBrace + 1).is(TOK_IDENTIFIER)) {
+                    yytoken = TOK_TYPE_NAME;
                 }
             }
             yyval = _tokens.at(yyloc).ptr;
@@ -172,11 +172,11 @@ AST *Parser::parse(int startToken)
                 const int state = _stateStack[_tos];
 
                 static int tks[] = {
-                    T_RIGHT_BRACE, T_RIGHT_PAREN, T_RIGHT_BRACKET,
-                    T_SEMICOLON, T_COMMA, T_COLON,
-                    T_NUMBER, T_TYPE_NAME, T_IDENTIFIER,
-                    T_LEFT_BRACE, T_LEFT_PAREN, T_LEFT_BRACKET,
-                    T_WHILE,
+                    TOK_RIGHT_BRACE, TOK_RIGHT_PAREN, TOK_RIGHT_BRACKET,
+                    TOK_SEMICOLON, TOK_COMMA, TOK_COLON,
+                    TOK_NUMBER, TOK_TYPE_NAME, TOK_IDENTIFIER,
+                    TOK_LEFT_BRACE, TOK_LEFT_PAREN, TOK_LEFT_BRACKET,
+                    TOK_WHILE,
                     0
                 };
 
@@ -189,9 +189,9 @@ AST *Parser::parse(int startToken)
                         }
 
                         yyrecovering = 3;
-                        if (*tptr == T_IDENTIFIER)
+                        if (*tptr == TOK_IDENTIFIER)
                             yyval = (void *) _engine->identifier(QLatin1String("$identifier"));
-                        else if (*tptr == T_NUMBER || *tptr == T_TYPE_NAME)
+                        else if (*tptr == TOK_NUMBER || *tptr == TOK_TYPE_NAME)
                             yyval = (void *) _engine->identifier(QLatin1String("$0"));
                         else
                             yyval = 0;
@@ -1296,511 +1296,511 @@ case 158: {
 #line 1885 "./glsl.g"
 
 case 159: {
-    ast(1) = makeBasicType(T_VOID);
+    ast(1) = makeBasicType(TOK_VOID);
 }   break;
 
 #line 1892 "./glsl.g"
 
 case 160: {
-    ast(1) = makeBasicType(T_FLOAT);
+    ast(1) = makeBasicType(TOK_FLOAT);
 }   break;
 
 #line 1899 "./glsl.g"
 
 case 161: {
-    ast(1) = makeBasicType(T_DOUBLE);
+    ast(1) = makeBasicType(TOK_DOUBLE);
 }   break;
 
 #line 1906 "./glsl.g"
 
 case 162: {
-    ast(1) = makeBasicType(T_INT);
+    ast(1) = makeBasicType(TOK_INT);
 }   break;
 
 #line 1913 "./glsl.g"
 
 case 163: {
-    ast(1) = makeBasicType(T_UINT);
+    ast(1) = makeBasicType(TOK_UINT);
 }   break;
 
 #line 1920 "./glsl.g"
 
 case 164: {
-    ast(1) = makeBasicType(T_BOOL);
+    ast(1) = makeBasicType(TOK_BOOL);
 }   break;
 
 #line 1927 "./glsl.g"
 
 case 165: {
-    ast(1) = makeBasicType(T_VEC2);
+    ast(1) = makeBasicType(TOK_VEC2);
 }   break;
 
 #line 1934 "./glsl.g"
 
 case 166: {
-    ast(1) = makeBasicType(T_VEC3);
+    ast(1) = makeBasicType(TOK_VEC3);
 }   break;
 
 #line 1941 "./glsl.g"
 
 case 167: {
-    ast(1) = makeBasicType(T_VEC4);
+    ast(1) = makeBasicType(TOK_VEC4);
 }   break;
 
 #line 1948 "./glsl.g"
 
 case 168: {
-    ast(1) = makeBasicType(T_DVEC2);
+    ast(1) = makeBasicType(TOK_DVEC2);
 }   break;
 
 #line 1955 "./glsl.g"
 
 case 169: {
-    ast(1) = makeBasicType(T_DVEC3);
+    ast(1) = makeBasicType(TOK_DVEC3);
 }   break;
 
 #line 1962 "./glsl.g"
 
 case 170: {
-    ast(1) = makeBasicType(T_DVEC4);
+    ast(1) = makeBasicType(TOK_DVEC4);
 }   break;
 
 #line 1969 "./glsl.g"
 
 case 171: {
-    ast(1) = makeBasicType(T_BVEC2);
+    ast(1) = makeBasicType(TOK_BVEC2);
 }   break;
 
 #line 1976 "./glsl.g"
 
 case 172: {
-    ast(1) = makeBasicType(T_BVEC3);
+    ast(1) = makeBasicType(TOK_BVEC3);
 }   break;
 
 #line 1983 "./glsl.g"
 
 case 173: {
-    ast(1) = makeBasicType(T_BVEC4);
+    ast(1) = makeBasicType(TOK_BVEC4);
 }   break;
 
 #line 1990 "./glsl.g"
 
 case 174: {
-    ast(1) = makeBasicType(T_IVEC2);
+    ast(1) = makeBasicType(TOK_IVEC2);
 }   break;
 
 #line 1997 "./glsl.g"
 
 case 175: {
-    ast(1) = makeBasicType(T_IVEC3);
+    ast(1) = makeBasicType(TOK_IVEC3);
 }   break;
 
 #line 2004 "./glsl.g"
 
 case 176: {
-    ast(1) = makeBasicType(T_IVEC4);
+    ast(1) = makeBasicType(TOK_IVEC4);
 }   break;
 
 #line 2011 "./glsl.g"
 
 case 177: {
-    ast(1) = makeBasicType(T_UVEC2);
+    ast(1) = makeBasicType(TOK_UVEC2);
 }   break;
 
 #line 2018 "./glsl.g"
 
 case 178: {
-    ast(1) = makeBasicType(T_UVEC3);
+    ast(1) = makeBasicType(TOK_UVEC3);
 }   break;
 
 #line 2025 "./glsl.g"
 
 case 179: {
-    ast(1) = makeBasicType(T_UVEC4);
+    ast(1) = makeBasicType(TOK_UVEC4);
 }   break;
 
 #line 2032 "./glsl.g"
 
 case 180: {
-    ast(1) = makeBasicType(T_MAT2);
+    ast(1) = makeBasicType(TOK_MAT2);
 }   break;
 
 #line 2039 "./glsl.g"
 
 case 181: {
-    ast(1) = makeBasicType(T_MAT3);
+    ast(1) = makeBasicType(TOK_MAT3);
 }   break;
 
 #line 2046 "./glsl.g"
 
 case 182: {
-    ast(1) = makeBasicType(T_MAT4);
+    ast(1) = makeBasicType(TOK_MAT4);
 }   break;
 
 #line 2053 "./glsl.g"
 
 case 183: {
-    ast(1) = makeBasicType(T_MAT2);
+    ast(1) = makeBasicType(TOK_MAT2);
 }   break;
 
 #line 2060 "./glsl.g"
 
 case 184: {
-    ast(1) = makeBasicType(T_MAT2X3);
+    ast(1) = makeBasicType(TOK_MAT2X3);
 }   break;
 
 #line 2067 "./glsl.g"
 
 case 185: {
-    ast(1) = makeBasicType(T_MAT2X4);
+    ast(1) = makeBasicType(TOK_MAT2X4);
 }   break;
 
 #line 2074 "./glsl.g"
 
 case 186: {
-    ast(1) = makeBasicType(T_MAT3X2);
+    ast(1) = makeBasicType(TOK_MAT3X2);
 }   break;
 
 #line 2081 "./glsl.g"
 
 case 187: {
-    ast(1) = makeBasicType(T_MAT3);
+    ast(1) = makeBasicType(TOK_MAT3);
 }   break;
 
 #line 2088 "./glsl.g"
 
 case 188: {
-    ast(1) = makeBasicType(T_MAT3X4);
+    ast(1) = makeBasicType(TOK_MAT3X4);
 }   break;
 
 #line 2095 "./glsl.g"
 
 case 189: {
-    ast(1) = makeBasicType(T_MAT4X2);
+    ast(1) = makeBasicType(TOK_MAT4X2);
 }   break;
 
 #line 2102 "./glsl.g"
 
 case 190: {
-    ast(1) = makeBasicType(T_MAT4X3);
+    ast(1) = makeBasicType(TOK_MAT4X3);
 }   break;
 
 #line 2109 "./glsl.g"
 
 case 191: {
-    ast(1) = makeBasicType(T_MAT4);
+    ast(1) = makeBasicType(TOK_MAT4);
 }   break;
 
 #line 2116 "./glsl.g"
 
 case 192: {
-    ast(1) = makeBasicType(T_DMAT2);
+    ast(1) = makeBasicType(TOK_DMAT2);
 }   break;
 
 #line 2123 "./glsl.g"
 
 case 193: {
-    ast(1) = makeBasicType(T_DMAT3);
+    ast(1) = makeBasicType(TOK_DMAT3);
 }   break;
 
 #line 2130 "./glsl.g"
 
 case 194: {
-    ast(1) = makeBasicType(T_DMAT4);
+    ast(1) = makeBasicType(TOK_DMAT4);
 }   break;
 
 #line 2137 "./glsl.g"
 
 case 195: {
-    ast(1) = makeBasicType(T_DMAT2);
+    ast(1) = makeBasicType(TOK_DMAT2);
 }   break;
 
 #line 2144 "./glsl.g"
 
 case 196: {
-    ast(1) = makeBasicType(T_DMAT2X3);
+    ast(1) = makeBasicType(TOK_DMAT2X3);
 }   break;
 
 #line 2151 "./glsl.g"
 
 case 197: {
-    ast(1) = makeBasicType(T_DMAT2X4);
+    ast(1) = makeBasicType(TOK_DMAT2X4);
 }   break;
 
 #line 2158 "./glsl.g"
 
 case 198: {
-    ast(1) = makeBasicType(T_DMAT3X2);
+    ast(1) = makeBasicType(TOK_DMAT3X2);
 }   break;
 
 #line 2165 "./glsl.g"
 
 case 199: {
-    ast(1) = makeBasicType(T_DMAT3);
+    ast(1) = makeBasicType(TOK_DMAT3);
 }   break;
 
 #line 2172 "./glsl.g"
 
 case 200: {
-    ast(1) = makeBasicType(T_DMAT3X4);
+    ast(1) = makeBasicType(TOK_DMAT3X4);
 }   break;
 
 #line 2179 "./glsl.g"
 
 case 201: {
-    ast(1) = makeBasicType(T_DMAT4X2);
+    ast(1) = makeBasicType(TOK_DMAT4X2);
 }   break;
 
 #line 2186 "./glsl.g"
 
 case 202: {
-    ast(1) = makeBasicType(T_DMAT4X3);
+    ast(1) = makeBasicType(TOK_DMAT4X3);
 }   break;
 
 #line 2193 "./glsl.g"
 
 case 203: {
-    ast(1) = makeBasicType(T_DMAT4);
+    ast(1) = makeBasicType(TOK_DMAT4);
 }   break;
 
 #line 2200 "./glsl.g"
 
 case 204: {
-    ast(1) = makeBasicType(T_SAMPLER1D);
+    ast(1) = makeBasicType(TOK_SAMPLER1D);
 }   break;
 
 #line 2207 "./glsl.g"
 
 case 205: {
-    ast(1) = makeBasicType(T_SAMPLER2D);
+    ast(1) = makeBasicType(TOK_SAMPLER2D);
 }   break;
 
 #line 2214 "./glsl.g"
 
 case 206: {
-    ast(1) = makeBasicType(T_SAMPLER3D);
+    ast(1) = makeBasicType(TOK_SAMPLER3D);
 }   break;
 
 #line 2221 "./glsl.g"
 
 case 207: {
-    ast(1) = makeBasicType(T_SAMPLERCUBE);
+    ast(1) = makeBasicType(TOK_SAMPLERCUBE);
 }   break;
 
 #line 2228 "./glsl.g"
 
 case 208: {
-    ast(1) = makeBasicType(T_SAMPLER1DSHADOW);
+    ast(1) = makeBasicType(TOK_SAMPLER1DSHADOW);
 }   break;
 
 #line 2235 "./glsl.g"
 
 case 209: {
-    ast(1) = makeBasicType(T_SAMPLER2DSHADOW);
+    ast(1) = makeBasicType(TOK_SAMPLER2DSHADOW);
 }   break;
 
 #line 2242 "./glsl.g"
 
 case 210: {
-    ast(1) = makeBasicType(T_SAMPLERCUBESHADOW);
+    ast(1) = makeBasicType(TOK_SAMPLERCUBESHADOW);
 }   break;
 
 #line 2249 "./glsl.g"
 
 case 211: {
-    ast(1) = makeBasicType(T_SAMPLER1DARRAY);
+    ast(1) = makeBasicType(TOK_SAMPLER1DARRAY);
 }   break;
 
 #line 2256 "./glsl.g"
 
 case 212: {
-    ast(1) = makeBasicType(T_SAMPLER2DARRAY);
+    ast(1) = makeBasicType(TOK_SAMPLER2DARRAY);
 }   break;
 
 #line 2263 "./glsl.g"
 
 case 213: {
-    ast(1) = makeBasicType(T_SAMPLER1DARRAYSHADOW);
+    ast(1) = makeBasicType(TOK_SAMPLER1DARRAYSHADOW);
 }   break;
 
 #line 2270 "./glsl.g"
 
 case 214: {
-    ast(1) = makeBasicType(T_SAMPLER2DARRAYSHADOW);
+    ast(1) = makeBasicType(TOK_SAMPLER2DARRAYSHADOW);
 }   break;
 
 #line 2277 "./glsl.g"
 
 case 215: {
-    ast(1) = makeBasicType(T_SAMPLERCUBEARRAY);
+    ast(1) = makeBasicType(TOK_SAMPLERCUBEARRAY);
 }   break;
 
 #line 2284 "./glsl.g"
 
 case 216: {
-    ast(1) = makeBasicType(T_SAMPLERCUBEARRAYSHADOW);
+    ast(1) = makeBasicType(TOK_SAMPLERCUBEARRAYSHADOW);
 }   break;
 
 #line 2291 "./glsl.g"
 
 case 217: {
-    ast(1) = makeBasicType(T_ISAMPLER1D);
+    ast(1) = makeBasicType(TOK_ISAMPLER1D);
 }   break;
 
 #line 2298 "./glsl.g"
 
 case 218: {
-    ast(1) = makeBasicType(T_ISAMPLER2D);
+    ast(1) = makeBasicType(TOK_ISAMPLER2D);
 }   break;
 
 #line 2305 "./glsl.g"
 
 case 219: {
-    ast(1) = makeBasicType(T_ISAMPLER3D);
+    ast(1) = makeBasicType(TOK_ISAMPLER3D);
 }   break;
 
 #line 2312 "./glsl.g"
 
 case 220: {
-    ast(1) = makeBasicType(T_ISAMPLERCUBE);
+    ast(1) = makeBasicType(TOK_ISAMPLERCUBE);
 }   break;
 
 #line 2319 "./glsl.g"
 
 case 221: {
-    ast(1) = makeBasicType(T_ISAMPLER1DARRAY);
+    ast(1) = makeBasicType(TOK_ISAMPLER1DARRAY);
 }   break;
 
 #line 2326 "./glsl.g"
 
 case 222: {
-    ast(1) = makeBasicType(T_ISAMPLER2DARRAY);
+    ast(1) = makeBasicType(TOK_ISAMPLER2DARRAY);
 }   break;
 
 #line 2333 "./glsl.g"
 
 case 223: {
-    ast(1) = makeBasicType(T_ISAMPLERCUBEARRAY);
+    ast(1) = makeBasicType(TOK_ISAMPLERCUBEARRAY);
 }   break;
 
 #line 2340 "./glsl.g"
 
 case 224: {
-    ast(1) = makeBasicType(T_USAMPLER1D);
+    ast(1) = makeBasicType(TOK_USAMPLER1D);
 }   break;
 
 #line 2347 "./glsl.g"
 
 case 225: {
-    ast(1) = makeBasicType(T_USAMPLER2D);
+    ast(1) = makeBasicType(TOK_USAMPLER2D);
 }   break;
 
 #line 2354 "./glsl.g"
 
 case 226: {
-    ast(1) = makeBasicType(T_USAMPLER3D);
+    ast(1) = makeBasicType(TOK_USAMPLER3D);
 }   break;
 
 #line 2361 "./glsl.g"
 
 case 227: {
-    ast(1) = makeBasicType(T_USAMPLERCUBE);
+    ast(1) = makeBasicType(TOK_USAMPLERCUBE);
 }   break;
 
 #line 2368 "./glsl.g"
 
 case 228: {
-    ast(1) = makeBasicType(T_USAMPLER1DARRAY);
+    ast(1) = makeBasicType(TOK_USAMPLER1DARRAY);
 }   break;
 
 #line 2375 "./glsl.g"
 
 case 229: {
-    ast(1) = makeBasicType(T_USAMPLER2DARRAY);
+    ast(1) = makeBasicType(TOK_USAMPLER2DARRAY);
 }   break;
 
 #line 2382 "./glsl.g"
 
 case 230: {
-    ast(1) = makeBasicType(T_USAMPLERCUBEARRAY);
+    ast(1) = makeBasicType(TOK_USAMPLERCUBEARRAY);
 }   break;
 
 #line 2389 "./glsl.g"
 
 case 231: {
-    ast(1) = makeBasicType(T_SAMPLER2DRECT);
+    ast(1) = makeBasicType(TOK_SAMPLER2DRECT);
 }   break;
 
 #line 2396 "./glsl.g"
 
 case 232: {
-    ast(1) = makeBasicType(T_SAMPLER2DRECTSHADOW);
+    ast(1) = makeBasicType(TOK_SAMPLER2DRECTSHADOW);
 }   break;
 
 #line 2403 "./glsl.g"
 
 case 233: {
-    ast(1) = makeBasicType(T_ISAMPLER2DRECT);
+    ast(1) = makeBasicType(TOK_ISAMPLER2DRECT);
 }   break;
 
 #line 2410 "./glsl.g"
 
 case 234: {
-    ast(1) = makeBasicType(T_USAMPLER2DRECT);
+    ast(1) = makeBasicType(TOK_USAMPLER2DRECT);
 }   break;
 
 #line 2417 "./glsl.g"
 
 case 235: {
-    ast(1) = makeBasicType(T_SAMPLERBUFFER);
+    ast(1) = makeBasicType(TOK_SAMPLERBUFFER);
 }   break;
 
 #line 2424 "./glsl.g"
 
 case 236: {
-    ast(1) = makeBasicType(T_ISAMPLERBUFFER);
+    ast(1) = makeBasicType(TOK_ISAMPLERBUFFER);
 }   break;
 
 #line 2431 "./glsl.g"
 
 case 237: {
-    ast(1) = makeBasicType(T_USAMPLERBUFFER);
+    ast(1) = makeBasicType(TOK_USAMPLERBUFFER);
 }   break;
 
 #line 2438 "./glsl.g"
 
 case 238: {
-    ast(1) = makeBasicType(T_SAMPLER2DMS);
+    ast(1) = makeBasicType(TOK_SAMPLER2DMS);
 }   break;
 
 #line 2445 "./glsl.g"
 
 case 239: {
-    ast(1) = makeBasicType(T_ISAMPLER2DMS);
+    ast(1) = makeBasicType(TOK_ISAMPLER2DMS);
 }   break;
 
 #line 2452 "./glsl.g"
 
 case 240: {
-    ast(1) = makeBasicType(T_USAMPLER2DMS);
+    ast(1) = makeBasicType(TOK_USAMPLER2DMS);
 }   break;
 
 #line 2459 "./glsl.g"
 
 case 241: {
-    ast(1) = makeBasicType(T_SAMPLER2DMSARRAY);
+    ast(1) = makeBasicType(TOK_SAMPLER2DMSARRAY);
 }   break;
 
 #line 2466 "./glsl.g"
 
 case 242: {
-    ast(1) = makeBasicType(T_ISAMPLER2DMSARRAY);
+    ast(1) = makeBasicType(TOK_ISAMPLER2DMSARRAY);
 }   break;
 
 #line 2473 "./glsl.g"
 
 case 243: {
-    ast(1) = makeBasicType(T_USAMPLER2DMSARRAY);
+    ast(1) = makeBasicType(TOK_USAMPLER2DMSARRAY);
 }   break;
 
 #line 2480 "./glsl.g"

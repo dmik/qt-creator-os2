@@ -517,221 +517,221 @@ bool Semantic::visit(DeclarationStatementAST *ast)
 bool Semantic::visit(BasicTypeAST *ast)
 {
     switch (ast->token) {
-    case Parser::T_VOID:
+    case Parser::TOK_VOID:
         _type = _engine->voidType();
         break;
 
-    case Parser::T_BOOL:
+    case Parser::TOK_BOOL:
         _type = _engine->boolType();
         break;
 
-    case Parser::T_INT:
+    case Parser::TOK_INT:
         _type = _engine->intType();
         break;
 
-    case Parser::T_UINT:
+    case Parser::TOK_UINT:
         _type = _engine->uintType();
         break;
 
-    case Parser::T_FLOAT:
+    case Parser::TOK_FLOAT:
         _type = _engine->floatType();
         break;
 
-    case Parser::T_DOUBLE:
+    case Parser::TOK_DOUBLE:
         _type = _engine->doubleType();
         break;
 
     // bvec
-    case Parser::T_BVEC2:
+    case Parser::TOK_BVEC2:
         _type = _engine->vectorType(_engine->boolType(), 2);
         break;
 
-    case Parser::T_BVEC3:
+    case Parser::TOK_BVEC3:
         _type = _engine->vectorType(_engine->boolType(), 3);
         break;
 
-    case Parser::T_BVEC4:
+    case Parser::TOK_BVEC4:
         _type = _engine->vectorType(_engine->boolType(), 4);
         break;
 
     // ivec
-    case Parser::T_IVEC2:
+    case Parser::TOK_IVEC2:
         _type = _engine->vectorType(_engine->intType(), 2);
         break;
 
-    case Parser::T_IVEC3:
+    case Parser::TOK_IVEC3:
         _type = _engine->vectorType(_engine->intType(), 3);
         break;
 
-    case Parser::T_IVEC4:
+    case Parser::TOK_IVEC4:
         _type = _engine->vectorType(_engine->intType(), 4);
         break;
 
     // uvec
-    case Parser::T_UVEC2:
+    case Parser::TOK_UVEC2:
         _type = _engine->vectorType(_engine->uintType(), 2);
         break;
 
-    case Parser::T_UVEC3:
+    case Parser::TOK_UVEC3:
         _type = _engine->vectorType(_engine->uintType(), 3);
         break;
 
-    case Parser::T_UVEC4:
+    case Parser::TOK_UVEC4:
         _type = _engine->vectorType(_engine->uintType(), 4);
         break;
 
     // vec
-    case Parser::T_VEC2:
+    case Parser::TOK_VEC2:
         _type = _engine->vectorType(_engine->floatType(), 2);
         break;
 
-    case Parser::T_VEC3:
+    case Parser::TOK_VEC3:
         _type = _engine->vectorType(_engine->floatType(), 3);
         break;
 
-    case Parser::T_VEC4:
+    case Parser::TOK_VEC4:
         _type = _engine->vectorType(_engine->floatType(), 4);
         break;
 
     // dvec
-    case Parser::T_DVEC2:
+    case Parser::TOK_DVEC2:
         _type = _engine->vectorType(_engine->doubleType(), 2);
         break;
 
-    case Parser::T_DVEC3:
+    case Parser::TOK_DVEC3:
         _type = _engine->vectorType(_engine->doubleType(), 3);
         break;
 
-    case Parser::T_DVEC4:
+    case Parser::TOK_DVEC4:
         _type = _engine->vectorType(_engine->doubleType(), 4);
         break;
 
     // mat2
-    case Parser::T_MAT2:
-    case Parser::T_MAT2X2:
+    case Parser::TOK_MAT2:
+    case Parser::TOK_MAT2X2:
         _type = _engine->matrixType(_engine->floatType(), 2, 2);
         break;
 
-    case Parser::T_MAT2X3:
+    case Parser::TOK_MAT2X3:
         _type = _engine->matrixType(_engine->floatType(), 2, 3);
         break;
 
-    case Parser::T_MAT2X4:
+    case Parser::TOK_MAT2X4:
         _type = _engine->matrixType(_engine->floatType(), 2, 4);
         break;
 
     // mat3
-    case Parser::T_MAT3X2:
+    case Parser::TOK_MAT3X2:
         _type = _engine->matrixType(_engine->floatType(), 3, 2);
         break;
 
-    case Parser::T_MAT3:
-    case Parser::T_MAT3X3:
+    case Parser::TOK_MAT3:
+    case Parser::TOK_MAT3X3:
         _type = _engine->matrixType(_engine->floatType(), 3, 3);
         break;
 
-    case Parser::T_MAT3X4:
+    case Parser::TOK_MAT3X4:
         _type = _engine->matrixType(_engine->floatType(), 3, 4);
         break;
 
     // mat4
-    case Parser::T_MAT4X2:
+    case Parser::TOK_MAT4X2:
         _type = _engine->matrixType(_engine->floatType(), 4, 2);
         break;
 
-    case Parser::T_MAT4X3:
+    case Parser::TOK_MAT4X3:
         _type = _engine->matrixType(_engine->floatType(), 4, 3);
         break;
 
-    case Parser::T_MAT4:
-    case Parser::T_MAT4X4:
+    case Parser::TOK_MAT4:
+    case Parser::TOK_MAT4X4:
         _type = _engine->matrixType(_engine->floatType(), 4, 4);
         break;
 
 
     // dmat2
-    case Parser::T_DMAT2:
-    case Parser::T_DMAT2X2:
+    case Parser::TOK_DMAT2:
+    case Parser::TOK_DMAT2X2:
         _type = _engine->matrixType(_engine->doubleType(), 2, 2);
         break;
 
-    case Parser::T_DMAT2X3:
+    case Parser::TOK_DMAT2X3:
         _type = _engine->matrixType(_engine->doubleType(), 2, 3);
         break;
 
-    case Parser::T_DMAT2X4:
+    case Parser::TOK_DMAT2X4:
         _type = _engine->matrixType(_engine->doubleType(), 2, 4);
         break;
 
     // dmat3
-    case Parser::T_DMAT3X2:
+    case Parser::TOK_DMAT3X2:
         _type = _engine->matrixType(_engine->doubleType(), 3, 2);
         break;
 
-    case Parser::T_DMAT3:
-    case Parser::T_DMAT3X3:
+    case Parser::TOK_DMAT3:
+    case Parser::TOK_DMAT3X3:
         _type = _engine->matrixType(_engine->doubleType(), 3, 3);
         break;
 
-    case Parser::T_DMAT3X4:
+    case Parser::TOK_DMAT3X4:
         _type = _engine->matrixType(_engine->doubleType(), 3, 4);
         break;
 
     // dmat4
-    case Parser::T_DMAT4X2:
+    case Parser::TOK_DMAT4X2:
         _type = _engine->matrixType(_engine->doubleType(), 4, 2);
         break;
 
-    case Parser::T_DMAT4X3:
+    case Parser::TOK_DMAT4X3:
         _type = _engine->matrixType(_engine->doubleType(), 4, 3);
         break;
 
-    case Parser::T_DMAT4:
-    case Parser::T_DMAT4X4:
+    case Parser::TOK_DMAT4:
+    case Parser::TOK_DMAT4X4:
         _type = _engine->matrixType(_engine->doubleType(), 4, 4);
         break;
 
     // samplers
-    case Parser::T_SAMPLER1D:
-    case Parser::T_SAMPLER2D:
-    case Parser::T_SAMPLER3D:
-    case Parser::T_SAMPLERCUBE:
-    case Parser::T_SAMPLER1DSHADOW:
-    case Parser::T_SAMPLER2DSHADOW:
-    case Parser::T_SAMPLERCUBESHADOW:
-    case Parser::T_SAMPLER1DARRAY:
-    case Parser::T_SAMPLER2DARRAY:
-    case Parser::T_SAMPLER1DARRAYSHADOW:
-    case Parser::T_SAMPLER2DARRAYSHADOW:
-    case Parser::T_SAMPLERCUBEARRAY:
-    case Parser::T_SAMPLERCUBEARRAYSHADOW:
-    case Parser::T_SAMPLER2DRECT:
-    case Parser::T_SAMPLER2DRECTSHADOW:
-    case Parser::T_SAMPLERBUFFER:
-    case Parser::T_SAMPLER2DMS:
-    case Parser::T_SAMPLER2DMSARRAY:
-    case Parser::T_ISAMPLER1D:
-    case Parser::T_ISAMPLER2D:
-    case Parser::T_ISAMPLER3D:
-    case Parser::T_ISAMPLERCUBE:
-    case Parser::T_ISAMPLER1DARRAY:
-    case Parser::T_ISAMPLER2DARRAY:
-    case Parser::T_ISAMPLERCUBEARRAY:
-    case Parser::T_ISAMPLER2DRECT:
-    case Parser::T_ISAMPLERBUFFER:
-    case Parser::T_ISAMPLER2DMS:
-    case Parser::T_ISAMPLER2DMSARRAY:
-    case Parser::T_USAMPLER1D:
-    case Parser::T_USAMPLER2D:
-    case Parser::T_USAMPLER3D:
-    case Parser::T_USAMPLERCUBE:
-    case Parser::T_USAMPLER1DARRAY:
-    case Parser::T_USAMPLER2DARRAY:
-    case Parser::T_USAMPLERCUBEARRAY:
-    case Parser::T_USAMPLER2DRECT:
-    case Parser::T_USAMPLERBUFFER:
-    case Parser::T_USAMPLER2DMS:
-    case Parser::T_USAMPLER2DMSARRAY:
+    case Parser::TOK_SAMPLER1D:
+    case Parser::TOK_SAMPLER2D:
+    case Parser::TOK_SAMPLER3D:
+    case Parser::TOK_SAMPLERCUBE:
+    case Parser::TOK_SAMPLER1DSHADOW:
+    case Parser::TOK_SAMPLER2DSHADOW:
+    case Parser::TOK_SAMPLERCUBESHADOW:
+    case Parser::TOK_SAMPLER1DARRAY:
+    case Parser::TOK_SAMPLER2DARRAY:
+    case Parser::TOK_SAMPLER1DARRAYSHADOW:
+    case Parser::TOK_SAMPLER2DARRAYSHADOW:
+    case Parser::TOK_SAMPLERCUBEARRAY:
+    case Parser::TOK_SAMPLERCUBEARRAYSHADOW:
+    case Parser::TOK_SAMPLER2DRECT:
+    case Parser::TOK_SAMPLER2DRECTSHADOW:
+    case Parser::TOK_SAMPLERBUFFER:
+    case Parser::TOK_SAMPLER2DMS:
+    case Parser::TOK_SAMPLER2DMSARRAY:
+    case Parser::TOK_ISAMPLER1D:
+    case Parser::TOK_ISAMPLER2D:
+    case Parser::TOK_ISAMPLER3D:
+    case Parser::TOK_ISAMPLERCUBE:
+    case Parser::TOK_ISAMPLER1DARRAY:
+    case Parser::TOK_ISAMPLER2DARRAY:
+    case Parser::TOK_ISAMPLERCUBEARRAY:
+    case Parser::TOK_ISAMPLER2DRECT:
+    case Parser::TOK_ISAMPLERBUFFER:
+    case Parser::TOK_ISAMPLER2DMS:
+    case Parser::TOK_ISAMPLER2DMSARRAY:
+    case Parser::TOK_USAMPLER1D:
+    case Parser::TOK_USAMPLER2D:
+    case Parser::TOK_USAMPLER3D:
+    case Parser::TOK_USAMPLERCUBE:
+    case Parser::TOK_USAMPLER1DARRAY:
+    case Parser::TOK_USAMPLER2DARRAY:
+    case Parser::TOK_USAMPLERCUBEARRAY:
+    case Parser::TOK_USAMPLER2DRECT:
+    case Parser::TOK_USAMPLERBUFFER:
+    case Parser::TOK_USAMPLER2DMS:
+    case Parser::TOK_USAMPLER2DMSARRAY:
         _type = _engine->samplerType(ast->token);
         break;
 
