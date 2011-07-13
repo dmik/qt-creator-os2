@@ -19,6 +19,10 @@ win32 {
     RC_FILE = qtcreator.rc
     target.path = /bin
     INSTALLS += target
+} else:os2 {
+    RC_FILE = qtcreator_os2.rc
+    target.path = /bin
+    INSTALLS += target
 } else:macx {
     LIBS += -framework CoreFoundation
     ICON = qtcreator.icns
