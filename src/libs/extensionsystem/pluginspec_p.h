@@ -64,6 +64,9 @@ public:
     void kill();
 
     QString name;
+#ifdef  Q_OS_OS2
+    QString shortName;
+#endif
     QString version;
     QString compatVersion;
     bool experimental;

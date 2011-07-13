@@ -194,6 +194,19 @@ QString PluginSpec::name() const
 }
 
 /*!
+    \fn QString PluginSpec::shortName() const
+    The short plugin name. This is valid after the PluginSpec::Read state is reached.
+    
+    \note This property is only available on OS/2.
+*/
+#ifdef  Q_OS_OS2
+QString PluginSpec::shortName() const
+{
+    return d->shortName;
+}
+#endif
+
+/*!
     \fn QString PluginSpec::version() const
     The plugin version. This is valid after the PluginSpec::Read state is reached.
 */
@@ -451,6 +464,9 @@ namespace {
     const char * const ARGUMENT = "argument";
     const char * const ARGUMENT_NAME = "name";
     const char * const ARGUMENT_PARAMETER = "parameter";
+#ifdef  Q_OS_OS2
+    const char * const PLUGIN_SHORT_NAME = "shortName";
+#endif
 }
 /*!
     \fn PluginSpecPrivate::PluginSpecPrivate(PluginSpec *spec)
@@ -579,6 +595,11 @@ void PluginSpecPrivate::readPluginSpec(QXmlStreamReader &reader)
         reader.raiseError(msgAttributeMissing(PLUGIN, PLUGIN_NAME));
         return;
     }
+#ifdef  Q_OS_OS2
+    shortName = reader.attributes().value(PLUGIN_SHORT_NAME).toString();
+    if (shortName.isEmpty())
+        shortName = name;
+#endif
     version = reader.attributes().value(PLUGIN_VERSION).toString();
     if (version.isEmpty()) {
         reader.raiseError(msgAttributeMissing(PLUGIN, PLUGIN_VERSION));
@@ -905,6 +926,8 @@ bool PluginSpecPrivate::loadLibrary()
     QString libName = QString("%1/%2.dll").arg(location).arg(name);
 #elif defined(Q_OS_MAC)
     QString libName = QString("%1/lib%2.dylib").arg(location).arg(name);
+#elif defined(Q_OS_OS2)
+    QString libName = QString("%1/%2.dll").arg(location).arg(shortName);
 #else
     QString libName = QString("%1/lib%2.so").arg(location).arg(name);
 #endif
@@ -915,6 +938,8 @@ bool PluginSpecPrivate::loadLibrary()
     QString libName = QString("%1/%2d.dll").arg(location).arg(name);
 #elif defined(Q_OS_MAC)
     QString libName = QString("%1/lib%2_debug.dylib").arg(location).arg(name);
+#elif defined(Q_OS_OS2)
+    QString libName = QString("%1/%2d.dll").arg(location).arg(shortName);
 #else
     QString libName = QString("%1/lib%2.so").arg(location).arg(name);
 #endif

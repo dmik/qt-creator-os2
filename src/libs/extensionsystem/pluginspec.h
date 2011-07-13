@@ -85,6 +85,9 @@ public:
 
     // information from the xml file, valid after 'Read' state is reached
     QString name() const;
+#ifdef	Q_OS_OS2
+    QString shortName() const;
+#endif
     QString version() const;
     QString compatVersion() const;
     QString vendor() const;
