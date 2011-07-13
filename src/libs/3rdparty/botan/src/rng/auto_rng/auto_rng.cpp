@@ -72,6 +72,10 @@
   #include <botan/es_ftw.h>
 #endif
 
+#if defined(BOTAN_HAS_ENTROPY_SRC_OS2)
+  #include <botan/es_os2.h>
+#endif
+
 namespace Botan {
 
 namespace {
@@ -127,6 +131,10 @@ void add_entropy_sources(RandomNumberGenerator* rng)
    rng->add_entropy_source(
       new Unix_EntropySource(split_on("/bin:/sbin:/usr/bin:/usr/sbin", ':'))
       );
+#endif
+
+#if defined(BOTAN_HAS_ENTROPY_SRC_OS2)
+   rng->add_entropy_source(new OS2_EntropySource);
 #endif
    }
 

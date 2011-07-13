@@ -28,6 +28,12 @@ unix:*-gcc* {
     QMAKE_CXXFLAGS_HIDESYMS -= -fvisibility-inlines-hidden # for ubuntu 7.04
 }
 
+os2 {
+    DEFINES += BOTAN_DLL=__declspec(dllexport)
+    QMAKE_CFLAGS += -ansi -fpermissive -finline-functions -Wno-long-long
+    QMAKE_CXXFLAGS += -ansi -fpermissive -finline-functions -Wno-long-long
+}
+
 # Input
 HEADERS += algo_factory/algo_cache.h \
         algo_factory/algo_factory.h \
@@ -286,6 +292,41 @@ unix {
 
 linux*-g++* {
     HEADERS += timer/posix_rt/tm_posix.h
+}
+
+os2 {
+    HEADERS += \
+           cert/cvc/cvc_ado.h \
+           cert/cvc/cvc_ca.h \
+           cert/cvc/cvc_cert.h \
+           cert/cvc/cvc_gen_cert.h \
+           cert/cvc/cvc_key.h \
+           cert/cvc/cvc_req.h \
+           cert/cvc/cvc_self.h \
+           cert/cvc/eac_asn_obj.h \
+           cert/cvc/eac_obj.h \
+           cert/cvc/ecdsa_sig.h \
+           cert/cvc/freestore.h \
+           cert/cvc/signed_obj.h \
+           entropy/egd/es_egd.h \
+           entropy/dev_random/es_dev.h \
+           entropy/proc_walk/es_ftw.h \
+           entropy/os2_stats/es_os2.h \
+           filters/fd_unix/fd_unix.h \
+           math/gfpmath/curve_gfp.h \
+           math/gfpmath/gfp_element.h \
+           math/gfpmath/gfp_modulus.h \
+           math/gfpmath/point_gfp.h \
+           mutex/pthreads/mux_pthr.h \
+           pubkey/ec_dompar/ec_dompar.h \
+           pubkey/ecc_key/ecc_key.h \
+           pubkey/ecdsa/ecdsa.h \
+           pubkey/ecdsa/ecdsa_core.h \
+           pubkey/ecdsa/ecdsa_op.h \
+           pubkey/eckaeg/eckaeg.h \
+           pubkey/eckaeg/eckaeg_core.h \
+           pubkey/eckaeg/eckaeg_op.h \
+           timer/gettimeofday/tm_unix.h
 }
 
 SOURCES += algo_factory/algo_factory.cpp \
@@ -572,6 +613,41 @@ linux* {
     SOURCES += timer/posix_rt/tm_posix.cpp
 }
 
+os2 {
+    SOURCES += \
+           cert/cvc/asn1_eac_str.cpp \
+           cert/cvc/asn1_eac_tm.cpp \
+           cert/cvc/cvc_ado.cpp \
+           cert/cvc/cvc_ca.cpp \
+           cert/cvc/cvc_cert.cpp \
+           cert/cvc/cvc_req.cpp \
+           cert/cvc/cvc_self.cpp \
+           cert/cvc/ecdsa_sig.cpp \
+           cert/cvc/signed_obj.cpp \
+           entropy/dev_random/es_dev.cpp \
+           entropy/proc_walk/es_ftw.cpp \
+           entropy/os2_stats/es_os2.cpp \
+           filters/fd_unix/fd_unix.cpp \
+           math/gfpmath/curve_gfp.cpp \
+           math/gfpmath/gfp_element.cpp \
+           math/gfpmath/point_gfp.cpp \
+           mutex/pthreads/mux_pthr.cpp \
+           pubkey/ec_dompar/ec_dompar.cpp \
+           pubkey/ecc_key/ecc_key.cpp \
+           pubkey/ecdsa/ecdsa.cpp \
+           pubkey/ecdsa/ecdsa_core.cpp \
+           pubkey/ecdsa/ecdsa_op.cpp \
+           pubkey/eckaeg/eckaeg.cpp \
+           pubkey/eckaeg/eckaeg_core.cpp \
+           pubkey/eckaeg/eckaeg_op.cpp \
+           timer/gettimeofday/tm_unix.cpp
+}
+
 linux* {
     LIBS += -lrt
+}
+
+
+os2 {
+    LIBS += pthread
 }

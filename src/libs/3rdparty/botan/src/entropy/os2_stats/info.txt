@@ -1,0 +1,18 @@
+realname "OS/2 Entropy Source"
+
+define ENTROPY_SRC_OS2
+modset os2
+
+load_on auto
+
+<add>
+es_os2.h
+es_os2.cpp
+</add>
+
+<os>
+os2
+</os>
+
+<libs>
+</libs>

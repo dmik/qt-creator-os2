@@ -37,6 +37,8 @@
 
 #if defined(Q_OS_WIN)
 #   include "build_windows.h"
+#elif defined(Q_OS_OS2)
+#   include "build_os2.h"
 #elif defined(Q_OS_UNIX)
 #   include "build_unix.h"
 #endif
