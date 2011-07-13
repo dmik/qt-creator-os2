@@ -13,7 +13,7 @@ isEmpty(IDE_LIBRARY_BASENAME) {
     IDE_LIBRARY_BASENAME = lib
 }
 
-linux-*||win32 {
+linux-*|win32|os2 {
   # form abs path to qtcreator lib dir
   QTC_LIBS=$$dirname(PWD)
   QTC_LIBS=$$dirname(QTC_LIBS)
@@ -30,7 +30,7 @@ macx {
     LIBS += -L"../../../bin/Qt Creator.app/Contents/PlugIns"
     CONFIG(debug, debug|release):LIBS += -lUtils_debug
     else:LIBS += -lUtils
-} else:win32 {
+} else:win32|os2 {
     message($$QTC_LIBS)
     LIBS += -L$$QTC_LIBS
     CONFIG(debug, debug|release):LIBS += -lUtilsd

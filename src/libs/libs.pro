@@ -17,7 +17,7 @@ SUBDIRS   = \
     symbianutils
 
 
-!win32 {
+!win32:!os2 {
     SUBDIRS += valgrind
 }
 

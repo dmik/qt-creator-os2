@@ -42,7 +42,7 @@ SUBDIRS   = plugin_coreplugin \
             plugin_macros \
             debugger/dumper.pro
 
-!win32 {
+!win32:!os2 {
      SUBDIRS += plugin_valgrindtoolbase \
                 plugin_memcheck
 }
