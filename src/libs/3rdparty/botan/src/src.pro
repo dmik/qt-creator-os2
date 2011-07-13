@@ -317,7 +317,7 @@ os2 {
            math/gfpmath/gfp_element.h \
            math/gfpmath/gfp_modulus.h \
            math/gfpmath/point_gfp.h \
-           mutex/pthreads/mux_pthr.h \
+           mutex/qt_mutex/mux_qt.h \
            pubkey/ec_dompar/ec_dompar.h \
            pubkey/ecc_key/ecc_key.h \
            pubkey/ecdsa/ecdsa.h \
@@ -631,7 +631,7 @@ os2 {
            math/gfpmath/curve_gfp.cpp \
            math/gfpmath/gfp_element.cpp \
            math/gfpmath/point_gfp.cpp \
-           mutex/pthreads/mux_pthr.cpp \
+           mutex/qt_mutex/mux_qt.cpp \
            pubkey/ec_dompar/ec_dompar.cpp \
            pubkey/ecc_key/ecc_key.cpp \
            pubkey/ecdsa/ecdsa.cpp \
@@ -647,7 +647,3 @@ linux* {
     LIBS += -lrt
 }
 
-
-os2 {
-    LIBS += pthread
-}

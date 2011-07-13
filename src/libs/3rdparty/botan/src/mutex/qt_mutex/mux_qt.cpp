@@ -9,7 +9,7 @@
 #include <botan/mux_qt.h>
 #include <qmutex.h>
 
-#if !defined(QT_THREAD_SUPPORT)
+#if defined(QT_NO_THREAD)
    #error Your version of Qt does not support threads or mutexes
 #endif
 

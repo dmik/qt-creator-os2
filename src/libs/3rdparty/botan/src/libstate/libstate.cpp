@@ -255,7 +255,7 @@ void Library_State::initialize(bool thread_safe)
 #elif defined(BOTAN_HAS_MUTEX_WIN32)
       mutex_factory = new Win32_Mutex_Factory;
 #elif defined(BOTAN_HAS_MUTEX_QT)
-      mutex_factory Qt_Mutex_Factory;
+      mutex_factory = new Qt_Mutex_Factory;
 #else
       throw Invalid_State("Could not find a thread-safe mutex object to use");
 #endif
