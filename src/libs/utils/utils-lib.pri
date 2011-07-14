@@ -86,7 +86,9 @@ win32 {
     HEADERS += $$PWD/winutils.h
 } else:os2 {
      SOURCES += $$PWD/abstractprocess_os2.cpp \
-        $$PWD/consoleprocess_os2.cpp
+        $$PWD/consoleprocess_os2.cpp \
+        $$PWD/os2utils.cpp
+    HEADERS += $$PWD/os2utils.h
 } else:SOURCES += $$PWD/consoleprocess_unix.cpp
 
 unix:!macx {
