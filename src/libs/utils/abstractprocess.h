@@ -76,6 +76,16 @@ public:
     static QByteArray createWinEnvironment(const QStringList &env);
 #endif
 
+#ifdef Q_OS_OS2
+    // Add PATH and *LIBPATH environment variables in case they are missing
+    static QStringList fixOs2Environment(const QStringList &env);
+    // Quote an OS/2 command line correctly for the "DosCreateProcess" API
+    static QByteArray createOs2ArgList(const QStringList &args);
+    // Create a bytearray suitable to be passed on as environment
+    // to the "DosCreateProcess" API (0-terminated strings).
+    static QByteArray createOs2Environment(const QStringList &env);
+#endif
+
 protected:
     QString m_workingDir;
     Environment m_environment;
