@@ -256,7 +256,7 @@ void PathListEditor::slotInsert()
 
 QChar PathListEditor::separator()
 {
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     static const QChar rc(QLatin1Char(';'));
 #else
     static const QChar rc(QLatin1Char(':'));

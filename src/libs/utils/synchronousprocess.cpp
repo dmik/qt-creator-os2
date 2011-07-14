@@ -602,7 +602,7 @@ bool SynchronousProcess::stopProcess(QProcess &p)
 
 enum  OS_Type { OS_Mac, OS_Windows, OS_Unix };
 
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
 static const OS_Type pathOS = OS_Windows;
 #else
 #  ifdef Q_OS_MAC

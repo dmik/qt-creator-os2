@@ -112,7 +112,7 @@ QString BuildableHelperLibrary::qtVersionForQMake(const QString &qmakePath)
 QStringList BuildableHelperLibrary::possibleQMakeCommands()
 {
     // On windows no one has renamed qmake, right?
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     return QStringList(QLatin1String("qmake.exe"));
 #else
     // On unix some distributions renamed qmake to avoid clashes

@@ -76,7 +76,7 @@ Environment::Environment(QStringList env)
     foreach (const QString &s, env) {
         int i = s.indexOf("=");
         if (i >= 0) {
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
             m_values.insert(s.left(i).toUpper(), s.mid(i+1));
 #else
             m_values.insert(s.left(i), s.mid(i+1));
@@ -100,7 +100,7 @@ QStringList Environment::toStringList() const
 
 void Environment::set(const QString &key, const QString &value)
 {
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     QString _key = key.toUpper();
 #else
     const QString &_key = key;
@@ -110,7 +110,7 @@ void Environment::set(const QString &key, const QString &value)
 
 void Environment::unset(const QString &key)
 {
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     QString _key = key.toUpper();
 #else
     const QString &_key = key;
@@ -120,7 +120,7 @@ void Environment::unset(const QString &key)
 
 void Environment::appendOrSet(const QString &key, const QString &value, const QString &sep)
 {
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     QString _key = key.toUpper();
 #else
     const QString &_key = key;
@@ -138,7 +138,7 @@ void Environment::appendOrSet(const QString &key, const QString &value, const QS
 
 void Environment::prependOrSet(const QString&key, const QString &value, const QString &sep)
 {
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     QString _key = key.toUpper();
 #else
     const QString &_key = key;
@@ -156,7 +156,7 @@ void Environment::prependOrSet(const QString&key, const QString &value, const QS
 
 void Environment::appendOrSetPath(const QString &value)
 {
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     const QChar sep = QLatin1Char(';');
 #else
     const QChar sep = QLatin1Char(':');
@@ -166,7 +166,7 @@ void Environment::appendOrSetPath(const QString &value)
 
 void Environment::prependOrSetPath(const QString &value)
 {
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     const QChar sep = QLatin1Char(';');
 #else
     const QChar sep = QLatin1Char(':');
@@ -192,6 +192,12 @@ QString Environment::searchInPath(const QString &executable,
 #ifdef Q_OS_WIN
     // Check all the executable extensions on windows:
     QStringList extensions = value(QLatin1String("PATHEXT")).split(QLatin1Char(';'));
+
+    // .exe.bat is legal (and run when starting new.exe), so always go through the complete list once:
+    foreach (const QString &ext, extensions)
+        execs << executable + ext.toLower();
+#else
+    QStringList extensions = QString(QLatin1String(".EXE;.BAT;.CMD;")).split(';');
 
     // .exe.bat is legal (and run when starting new.exe), so always go through the complete list once:
     foreach (const QString &ext, extensions)
@@ -240,7 +246,7 @@ QString Environment::searchInPath(const QStringList &executables,
 
 QStringList Environment::path() const
 {
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     const QChar sep = QLatin1Char(';');
 #else
     const QChar sep = QLatin1Char(':');
@@ -378,7 +384,7 @@ QString Environment::expandVariables(const QString &input) const
 {
     QString result = input;
 
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     for (int vStart = -1, i = 0; i < result.length(); ) {
         if (result.at(i++) == QLatin1Char('%')) {
             if (vStart > 0) {

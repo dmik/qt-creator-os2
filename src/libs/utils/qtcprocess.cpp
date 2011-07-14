@@ -504,6 +504,17 @@ inline static bool hasSpecialCharsUnix(const QString &arg)
 
 QString QtcProcess::quoteArgUnix(const QString &arg)
 {
+#ifdef	Q_OS_OS2
+    if (!arg.length())
+        return QString::fromLatin1("\"\"");
+
+    QString ret(arg);
+    if (hasSpecialCharsUnix(ret)) {
+        ret.replace(QLatin1Char('\"'), QLatin1String("\\\""));
+        ret.prepend(QLatin1Char('\"'));
+        ret.append(QLatin1Char('\"'));
+    }
+#else
     if (!arg.length())
         return QString::fromLatin1("''");
 
@@ -513,6 +524,7 @@ QString QtcProcess::quoteArgUnix(const QString &arg)
         ret.prepend(QLatin1Char('\''));
         ret.append(QLatin1Char('\''));
     }
+#endif
     return ret;
 }
 
@@ -622,6 +634,25 @@ void QtcProcess::prepareCommand(const QString &command, const QString &arguments
                 + quoteArg(QDir::toNativeSeparators(command)) + QLatin1Char(' ') + arguments
                 + QLatin1Char('"');
     }
+}
+#elif defined (Q_OS_OS2)
+bool QtcProcess::prepareCommand(const QString &command, const QString &arguments,
+                                QString *outCmd, QStringList *outArgs,
+                                const Environment *env, const QString *pwd)
+{
+    QtcProcess::SplitError err;
+    *outArgs = QtcProcess::prepareArgs(arguments, &err, env, pwd);
+    if (err == QtcProcess::SplitOk) {
+        *outCmd = command;
+    } else {
+        if (err != QtcProcess::FoundMeta)
+            return false;
+        *outCmd = QString::fromLatin1(qgetenv("COMSPEC"));
+        *outArgs << QLatin1String("/c")
+        	 << QLatin1String("/s")
+        	 << (quoteArg(command) + QLatin1Char(' ') + arguments);
+    }
+    return true;
 }
 #else
 bool QtcProcess::prepareCommand(const QString &command, const QString &arguments,

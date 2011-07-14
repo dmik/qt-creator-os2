@@ -85,7 +85,7 @@ void FileNameValidatingLineEdit::setAllowDirectories(bool v)
 
 /* Validate a file base name, check for forbidden characters/strings. */
 
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
 #  define SLASHES "/\\"
 #else
 #  define SLASHES "/"
