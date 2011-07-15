@@ -222,6 +222,8 @@ win32 {
     HEADERS += winguiprocess.h \
         msvcparser.h \
         msvctoolchain.h
+} else:os2 {
+	SOURCES += applicationlauncher_os2.cpp
 } else {
     SOURCES += applicationlauncher_x11.cpp
     macx:LIBS += -framework Carbon

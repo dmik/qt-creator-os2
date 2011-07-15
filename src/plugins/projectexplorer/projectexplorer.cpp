@@ -293,6 +293,8 @@ bool ProjectExplorerPlugin::initialize(const QStringList &arguments, QString *er
 #ifdef Q_OS_WIN
     addAutoReleasedObject(new Internal::MingwToolChainFactory);
     addAutoReleasedObject(new Internal::MsvcToolChainFactory);
+#elif defined(Q_OS_OS2)
+    addAutoReleasedObject(new Internal::GccToolChainFactory);
 #else
     addAutoReleasedObject(new Internal::GccToolChainFactory);
     addAutoReleasedObject(new Internal::LinuxIccToolChainFactory);

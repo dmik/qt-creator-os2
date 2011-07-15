@@ -45,6 +45,7 @@
 #include <utils/qtcassert.h>
 #include <utils/qtcprocess.h>
 #include <utils/unixutils.h>
+#include <utils/os2utils.h>
 #include <utils/consoleprocess.h>
 
 #include <QtCore/QDebug>
@@ -367,7 +368,7 @@ QString FolderNavigationWidget::msgGraphicalShellAction()
 
 QString FolderNavigationWidget::msgTerminalAction()
 {
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     return tr("Open Command Prompt Here...");
 #else
     return tr("Open Terminal Here...");
@@ -407,6 +408,8 @@ void FolderNavigationWidget::showInGraphicalShell(QWidget *parent, const QString
         param = QLatin1String("/select,");
     param += QDir::toNativeSeparators(pathIn);
     QProcess::startDetached(explorer, QStringList(param));
+#elif defined(Q_OS_OS2)
+    Utils::Os2Utils::openFolder(parent, pathIn);
 #elif defined(Q_OS_MAC)
     Q_UNUSED(parent)
     QStringList scriptArgs;
@@ -438,7 +441,7 @@ void FolderNavigationWidget::showInGraphicalShell(QWidget *parent, const QString
 void FolderNavigationWidget::openTerminal(const QString &path)
 {
     // Get terminal application
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     const QString terminalEmulator = QString::fromLocal8Bit(qgetenv("COMSPEC"));
     const QStringList args; // none
 #else

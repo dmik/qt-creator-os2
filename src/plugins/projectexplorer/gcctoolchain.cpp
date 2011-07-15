@@ -223,6 +223,10 @@ static QList<ProjectExplorer::Abi> guessGccAbi(const QString &m)
             width = 32;
         } else if (p == QLatin1String("gnueabi")) {
             format = ProjectExplorer::Abi::ElfFormat;
+        } else if (p == QLatin1String("os2")) {
+            os = ProjectExplorer::Abi::Os2OS;
+            flavor = ProjectExplorer::Abi::GenericOs2Flavor;
+            format = ProjectExplorer::Abi::LXFormat;
         } else {
             ++unknownCount;
         }
