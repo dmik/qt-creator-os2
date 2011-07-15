@@ -81,7 +81,7 @@ static const char *SETTINGS_OPTION = "-settingspath";
 typedef QList<ExtensionSystem::PluginSpec *> PluginSpecSet;
 
 // Helpers for displaying messages. Note that there is no console on Windows.
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
 // Format as <pre> HTML
 static inline void toHtml(QString &t)
 {
@@ -96,11 +96,19 @@ static void displayHelpText(QString t) // No console on Windows.
 {
     toHtml(t);
     QMessageBox::information(0, QLatin1String(appNameC), t);
+#if defined(Q_OS_OS2)
+    // also output to the console which lets redirect it to a file
+    qWarning("%s", qPrintable(t));
+#endif
 }
 
 static void displayError(const QString &t) // No console on Windows.
 {
     QMessageBox::critical(0, QLatin1String(appNameC), t);
+#if defined(Q_OS_OS2)
+    // also output to the console which lets redirect it to a file
+    qCritical("%s", qPrintable(t));
+#endif
 }
 
 #else
