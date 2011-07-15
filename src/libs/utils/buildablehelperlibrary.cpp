@@ -274,7 +274,7 @@ bool BuildableHelperLibrary::buildHelper(const QString &helperName, const QStrin
         return false;
     }
     output->append(QCoreApplication::translate("ProjectExplorer::BuildableHelperLibrary", "Running %1 ...\n").arg(makeFullPath));
-    if (!runBuildProcess(proc, makeFullPath, QStringList(), 120000, false, output, errorMessage))
+    if (!runBuildProcess(proc, makeFullPath, QStringList(), 600000, false, output, errorMessage))
         return false;
     return true;
 }
