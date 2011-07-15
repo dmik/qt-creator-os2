@@ -178,11 +178,27 @@ static QList<Abi> abiOf(const QByteArray &data)
                && static_cast<unsigned char>(data.at(18)) == 'O' && static_cast<unsigned char>(data.at(19)) == 'C') {
         result.append(Abi(Abi::ArmArchitecture, Abi::SymbianOS, Abi::SymbianDeviceFlavor, Abi::ElfFormat, 32));
     } else {
-        // Windows PE
-        // Windows can have its magic bytes everywhere...
-        int pePos = data.indexOf(QByteArray("PE\0\0", 4));
-        if (pePos >= 0)
-            result = parseCoffHeader(data.mid(pePos + 4));
+        int extHdrOfs = 0;
+        if (data.size() >= 66
+            && static_cast<unsigned char>(data.at(0)) == 'M' && static_cast<unsigned char>(data.at(1)) == 'Z'
+            && ((static_cast<unsigned char>(data.at(25)) << 8) + static_cast<unsigned char>(data.at(24))) >= 64) {
+
+            // offset of secondary header ('LX', 'NE', 'PE')
+            extHdrOfs = (static_cast<unsigned char>(data.at(63)) << 24) |
+            	        (static_cast<unsigned char>(data.at(62)) << 16) |
+            	        (static_cast<unsigned char>(data.at(61)) <<  8) |
+            	        (static_cast<unsigned char>(data.at(60)) <<  0);
+        }
+
+        if (static_cast<unsigned char>(data.at(extHdrOfs)) == 'L' && static_cast<unsigned char>(data.at(extHdrOfs+1)) == 'X') {
+            result.append(Abi(Abi::X86Architecture, Abi::Os2OS, Abi::GenericOs2Flavor, Abi::LXFormat, 32));
+        } else {
+            // Windows PE
+            // Windows can have its magic bytes everywhere...
+            int pePos = data.indexOf(QByteArray("PE\0\0", 4));
+            if (pePos >= 0)
+                result = parseCoffHeader(data.mid(pePos + 4));
+        }
     }
     return result;
 }
@@ -217,6 +233,10 @@ Abi::Abi(const Architecture &a, const OS &o,
         break;
     case ProjectExplorer::Abi::WindowsOS:
         if (m_osFlavor < WindowsMsvc2005Flavor || m_osFlavor > WindowsCEFlavor)
+            m_osFlavor = UnknownFlavor;
+        break;
+    case ProjectExplorer::Abi::Os2OS:
+        if (m_osFlavor != GenericOs2Flavor)
             m_osFlavor = UnknownFlavor;
         break;
     }
@@ -257,6 +277,8 @@ Abi::Abi(const QString &abiString) :
             m_os = UnixOS;
         else if (abiParts.at(1) == QLatin1String("windows"))
             m_os = WindowsOS;
+        else if (abiParts.at(1) == QLatin1String("os2"))
+            m_os = Os2OS;
         else
             return;
     }
@@ -288,6 +310,8 @@ Abi::Abi(const QString &abiString) :
             m_osFlavor = WindowsMSysFlavor;
         else if (abiParts.at(2) == QLatin1String("ce") && m_os == WindowsOS)
             m_osFlavor = WindowsCEFlavor;
+        else if (abiParts.at(2) == QLatin1String("generic") && m_os == Os2OS)
+            m_osFlavor = GenericOs2Flavor;
         else
             return;
     }
@@ -303,6 +327,8 @@ Abi::Abi(const QString &abiString) :
             m_binaryFormat = MachOFormat;
         else if (abiParts.at(3) == QLatin1String("qml_rt"))
             m_binaryFormat = RuntimeQmlFormat;
+        else if (abiParts.at(3) == QLatin1String("lx"))
+            m_binaryFormat = LXFormat;
         else
             return;
     }
@@ -398,6 +424,8 @@ QString Abi::toString(const OS &o)
         return QLatin1String("unix");
     case WindowsOS:
         return QLatin1String("windows");
+    case Os2OS:
+        return QLatin1String("os2");
     case UnknownOS: // fall through!
     default:
         return QLatin1String("unknown");
@@ -433,6 +461,8 @@ QString Abi::toString(const OSFlavor &of)
         return QLatin1String("msys");
     case ProjectExplorer::Abi::WindowsCEFlavor:
         return QLatin1String("ce");
+    case ProjectExplorer::Abi::GenericOs2Flavor:
+        return QLatin1String("generic");
     case ProjectExplorer::Abi::UnknownFlavor: // fall through!
     default:
         return QLatin1String("unknown");
@@ -450,6 +480,8 @@ QString Abi::toString(const BinaryFormat &bf)
         return QLatin1String("mach_o");
     case RuntimeQmlFormat:
         return QLatin1String("qml_rt");
+    case LXFormat:
+        return QLatin1String("lx");
     case UnknownFormat: // fall through!
     default:
         return QLatin1String("unknown");
@@ -491,6 +523,10 @@ Abi Abi::hostAbi()
     os = MacOS;
     subos = GenericMacFlavor;
     format = MachOFormat;
+#elif defined (Q_OS_OS2)
+    os = Os2OS;
+    subos = GenericOs2Flavor;
+    format = LXFormat;
 #endif
 
     return Abi(arch, os, subos, format, QSysInfo::WordSize);

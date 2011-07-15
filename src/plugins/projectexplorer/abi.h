@@ -61,7 +61,8 @@ public:
         MacOS,
         SymbianOS,
         UnixOS,
-        WindowsOS
+        WindowsOS,
+        Os2OS
     };
 
     enum OSFlavor {
@@ -88,7 +89,10 @@ public:
         WindowsMsvc2008Flavor,
         WindowsMsvc2010Flavor,
         WindowsMSysFlavor,
-        WindowsCEFlavor
+        WindowsCEFlavor,
+
+        // Os2
+        GenericOs2Flavor
     };
 
     enum BinaryFormat {
@@ -96,7 +100,8 @@ public:
         ElfFormat,
         MachOFormat,
         PEFormat,
-        RuntimeQmlFormat
+        RuntimeQmlFormat,
+        LXFormat
     };
 
     Abi() :
