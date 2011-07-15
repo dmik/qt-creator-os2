@@ -43,13 +43,13 @@ QStringList AbstractProcess::fixOs2Environment(const QStringList &env)
     QStringList envStrings = env;
     static struct { ULONG type; const char *name; } vars[] = {
         { 0,             "PATH" },
-        { BEGIN_LIBPATH, "_BEGINLIBPATH" },
-        { END_LIBPATH,   "_ENDLIBPATH" },
-        { LIBPATHSTRICT, "_LIBPATHSTRICT" },
+        { BEGIN_LIBPATH, "QTC_BEGINLIBPATH" },
+        { END_LIBPATH,   "QTC_ENDLIBPATH" },
+        { LIBPATHSTRICT, "QTC_LIBPATHSTRICT" },
     };
 
     // add PATH, BEGINLIBPATH, ENDLIBPATH and LIBPATHSTRICT if necessary (for DLL loading)
-    // ATTENTION: LIBPATH entries aren't regular environment variables. We prepend a '_' to
+    // ATTENTION: LIBPATH entries aren't regular environment variables. We prepend a 'QTC_' to
     // avoid confusion. These variables will be filtered out in process_stub_os2.c.
     for (int i = 0; i < (int)(sizeof(vars)/sizeof(vars[0])); i++) {
         QLatin1String   name(vars[i].name);

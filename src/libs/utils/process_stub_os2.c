@@ -106,9 +106,9 @@ int main(int argc, char *argv[])
     ULONG appType, sid, pid, tqElemSize;
     struct sockaddr_un sau;
     static struct { ULONG type; const char *name; } vars[] = {
-        { BEGIN_LIBPATH, "_QTC_BEGINLIBPATH" },
-        { END_LIBPATH,   "_QTC_ENDLIBPATH" },
-        { LIBPATHSTRICT, "_QTC_LIBPATHSTRICT" },
+        { BEGIN_LIBPATH, "QTC_BEGINLIBPATH" },
+        { END_LIBPATH,   "QTC_ENDLIBPATH" },
+        { LIBPATHSTRICT, "QTC_LIBPATHSTRICT" },
     };
 
     if (argc != ArgCount) {
