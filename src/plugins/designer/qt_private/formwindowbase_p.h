@@ -163,7 +163,7 @@ public:
         LFLineTerminator,
         CRLFLineTerminator,
         NativeLineTerminator =
-#if defined (Q_OS_WIN)
+#if defined (Q_OS_WIN) || defined (Q_OS_OS2)
             CRLFLineTerminator
 #else
             LFLineTerminator
@@ -186,7 +186,7 @@ private slots:
 private:
     void syncGridFeature();
 
-    FormWindowBasePrivate *m_d;    
+    FormWindowBasePrivate *m_d;
 };
 
 }  // namespace qdesigner_internal

@@ -61,7 +61,7 @@ static QString defaultCommand()
     Utils::Environment env = Utils::Environment::systemEnvironment();
     QString rc;
     rc = QLatin1String("p4");
-#if defined(Q_OS_WIN32)
+#if defined(Q_OS_WIN32) || defined(Q_OS_OS2)
     rc.append(QLatin1String(".exe"));
 #endif
     return env.searchInPath(rc);

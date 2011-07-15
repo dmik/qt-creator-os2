@@ -51,7 +51,7 @@ static QString defaultCommand()
 {
     QString rc;
     rc = QLatin1String("svn");
-#if defined(Q_OS_WIN32)
+#if defined(Q_OS_WIN32) || defined(Q_OS_OS2)
     rc.append(QLatin1String(".exe"));
 #endif
     return rc;

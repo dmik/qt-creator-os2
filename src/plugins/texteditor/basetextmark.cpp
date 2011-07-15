@@ -114,7 +114,7 @@ void BaseTextMark::init()
 
 void BaseTextMark::editorOpened(Core::IEditor *editor)
 {
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     if (m_fileName.compare(editor->file()->fileName(), Qt::CaseInsensitive))
         return;
 #else
