@@ -252,7 +252,7 @@ plugin_analyzerbase.subdir = analyzerbase
 plugin_analyzerbase.depends = plugin_coreplugin
 plugin_analyzerbase.depends += plugin_projectexplorer
 
-!win32 {
+!win32:!os2 {
     plugin_valgrindtoolbase.subdir = valgrindtoolbase
     plugin_valgrindtoolbase.depends = plugin_coreplugin
     plugin_valgrindtoolbase.depends += plugin_analyzerbase
