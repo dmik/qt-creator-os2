@@ -35,7 +35,7 @@
 
 #include <QtCore/QDebug>
 
-#ifdef Q_OS_UNIX
+#if defined(Q_OS_UNIX) || defined(Q_OS_OS2)
 #   include <unistd.h>
 #   include <signal.h>
 #else

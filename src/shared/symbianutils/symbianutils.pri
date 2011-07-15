@@ -31,6 +31,7 @@ SOURCES += $$PWD/trkutils.cpp \
 DEFINES += HAS_SERIALPORT
 win32:SOURCES += $$PWD/virtualserialdevice_win.cpp
 unix:SOURCES += $$PWD/virtualserialdevice_posix.cpp
+os2:SOURCES += $$PWD/virtualserialdevice_posix.cpp
 
 # Tests/trklauncher is a console application
 contains(QT, gui) {

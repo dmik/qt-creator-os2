@@ -79,7 +79,9 @@ bool VirtualSerialDevice::open(OpenMode mode)
         close();
         return false;
     }
+#ifndef Q_OS_OS2
     cfmakeraw(&termInfo);
+#endif
     // Turn off terminal echo as not get messages back, among other things
     termInfo.c_cflag |= CREAD|CLOCAL;
     termInfo.c_cc[VTIME] = 0;

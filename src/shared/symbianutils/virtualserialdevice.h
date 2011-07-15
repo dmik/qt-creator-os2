@@ -92,7 +92,7 @@ private slots:
     void commEventOccurred();
 #endif
 
-#ifdef Q_OS_UNIX
+#if defined(Q_OS_UNIX) || defined(Q_OS_OS2)
 private:
     bool tryWrite(const char *data, qint64 maxSize, qint64 &bytesWritten);
     enum FlushPendingOption {
