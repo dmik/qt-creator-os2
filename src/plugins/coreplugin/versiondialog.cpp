@@ -54,9 +54,11 @@ using namespace Core::Constants;
 VersionDialog::VersionDialog(QWidget *parent)
     : QDialog(parent)
 {
+#ifndef	Q_OS_OS2
     // We need to set the window icon explicitly here since for some reason the
     // application icon isn't used when the size of the dialog is fixed (at least not on X11/GNOME)
     setWindowIcon(QIcon(QLatin1String(Constants::ICON_QTLOGO_128)));
+#endif
 
     setWindowTitle(tr("About Qt Creator"));
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);

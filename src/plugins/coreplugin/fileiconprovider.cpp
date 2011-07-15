@@ -141,7 +141,7 @@ QIcon FileIconProvider::icon(const QFileInfo &fileInfo) const
         }
     }
     // Get icon from OS.
-#if defined(Q_WS_WIN) || defined(Q_WS_MAC)
+#if defined(Q_WS_WIN) || defined(Q_WS_MAC) || defined(Q_WS_OS2)
     return QFileIconProvider::icon(fileInfo);
 #else
     // File icons are unknown on linux systems.

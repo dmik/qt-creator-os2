@@ -204,7 +204,7 @@ else:macx {
     OBJECTIVE_SOURCES += progressmanager/progressmanager_mac.mm
     LIBS += -framework AppKit
 }
-else:unix {
+else:unix|os2 {
     SOURCES += progressmanager/progressmanager_x11.cpp
 
     images.files = images/qtcreator_logo_*.png

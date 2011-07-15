@@ -444,7 +444,7 @@ QString FileManager::fixFileName(const QString &fileName, FixMode fixmode)
         s = QDir::cleanPath(s);
     }
     s = QDir::toNativeSeparators(s);
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     s = s.toLower();
 #endif
     return s;
