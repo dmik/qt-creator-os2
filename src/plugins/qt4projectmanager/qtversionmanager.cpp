@@ -309,7 +309,7 @@ void QtVersionManager::updateSettings()
     QString preferred = settings->value(QLatin1String("PreferredQMakePath")).toString();
     preferred = QDir::fromNativeSeparators(preferred);
     if (!preferred.isEmpty()) {
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
         preferred = preferred.toLower();
         if (!preferred.endsWith(QLatin1String(".exe")))
             preferred.append(QLatin1String(".exe"));
@@ -915,7 +915,7 @@ void QtVersion::setDisplayName(const QString &name)
 void QtVersion::setQMakeCommand(const QString& qmakeCommand)
 {
     m_qmakeCommand = QDir::fromNativeSeparators(qmakeCommand);
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     m_qmakeCommand = m_qmakeCommand.toLower();
 #endif
     m_designerCommand.clear();
@@ -951,7 +951,7 @@ void QtVersion::updateSourcePath()
         }
     }
     m_sourcePath = QDir::cleanPath(m_sourcePath);
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     m_sourcePath = m_sourcePath.toLower();
 #endif
 }
@@ -974,7 +974,7 @@ QString QtVersionManager::findQMakeBinaryFromMakefile(const QString &makefile)
                     qDebug()<<"#~~ QMAKE is:"<<r1.cap(1).trimmed();
                 QFileInfo qmake(r1.cap(1).trimmed());
                 QString qmakePath = qmake.filePath();
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
                 if (!qmakePath.endsWith(QLatin1String(".exe")))
                     qmakePath.append(QLatin1String(".exe"));
 #endif
@@ -982,7 +982,7 @@ QString QtVersionManager::findQMakeBinaryFromMakefile(const QString &makefile)
                 QFileInfo fi(qmakePath);
                 if (fi.exists()) {
                     qmakePath = fi.absoluteFilePath();
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
                     qmakePath = qmakePath.toLower();
 #endif
                     return qmakePath;
@@ -1142,6 +1142,8 @@ void QtVersionManager::parseArgs(const QString &args, QList<QMakeAssignment> *as
         } else if (ait.value() == QLatin1String("-macx")) {
 #elif defined(Q_OS_QNX6)
         } else if (ait.value() == QLatin1String("-qnx6")) {
+#elif defined(Q_OS_OS2)
+        } else if (ait.value() == QLatin1String("-os2")) {
 #else
         } else if (ait.value() == QLatin1String("-unix")) {
 #endif
@@ -1333,7 +1335,7 @@ QString QtVersion::uicCommand() const
         return QString();
     if (!m_uicCommand.isNull())
         return m_uicCommand;
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     const QStringList possibleCommands(QLatin1String("uic.exe"));
 #else
     QStringList possibleCommands;
@@ -1347,7 +1349,7 @@ QString QtVersion::uicCommand() const
 // 'foo', 'foo.exe', 'Foo.app/Contents/MacOS/Foo'
 static inline QStringList possibleGuiBinaries(const QString &name)
 {
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     return QStringList(name + QLatin1String(".exe"));
 #elif defined(Q_OS_MAC) // 'Foo.app/Contents/MacOS/Foo'
     QString upCaseName = name;
@@ -1466,7 +1468,7 @@ void QtVersion::updateAbiAndMkspec() const
     if (baseMkspecDir.isEmpty())
         baseMkspecDir = versionInfo().value("QT_INSTALL_DATA") + "/mkspecs";
 
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     baseMkspecDir = baseMkspecDir.toLower();
 #endif
 
@@ -1474,7 +1476,7 @@ void QtVersion::updateAbiAndMkspec() const
 
     // qDebug() << "default mkspec is located at" << mkspecFullPath;
 
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     QFile f2(mkspecFullPath + "/qmake.conf");
     if (f2.exists() && f2.open(QIODevice::ReadOnly)) {
         while (!f2.atEnd()) {
@@ -1484,7 +1486,7 @@ void QtVersion::updateAbiAndMkspec() const
                 if (temp.size() == 2) {
                     QString possibleFullPath = temp.at(1).trimmed();
                     // We sometimes get a mix of different slash styles here...
-                    possibleFullPath = possibleFullPath.replace('\\', '/');
+                    possibleFullPath = QDir::cleanPath(possibleFullPath);
                     if (QFileInfo(possibleFullPath).exists()) // Only if the path exists
                         mkspecFullPath = possibleFullPath;
                 }
@@ -1519,7 +1521,7 @@ void QtVersion::updateAbiAndMkspec() const
     mkspecFullPath =resolveLink(mkspecFullPath);
 #endif
 
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     mkspecFullPath = mkspecFullPath.toLower();
 #endif
 
@@ -1756,7 +1758,7 @@ void QtVersion::addToEnvironment(Utils::Environment &env) const
         if (!epocRootPath.endsWith(QLatin1Char('/')))
             epocRootPath.append(QLatin1Char('/'));
         if (!isBuildWithSymbianSbsV2()) {
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
             if (epocRootPath.count() > 2
                     && epocRootPath.at(0).toLower() >= QLatin1Char('a')
                     && epocRootPath.at(0).toLower() <= QLatin1Char('z')

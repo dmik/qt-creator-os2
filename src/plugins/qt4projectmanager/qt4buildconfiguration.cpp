@@ -586,7 +586,7 @@ QString Qt4BuildConfiguration::extractSpecFromArguments(QString *args,
     if (baseMkspecDir.isEmpty())
         baseMkspecDir = version->versionInfo().value("QT_INSTALL_DATA") + "/mkspecs";
 
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     baseMkspecDir = baseMkspecDir.toLower();
     parsedSpec = parsedSpec.toLower();
 #endif
@@ -598,7 +598,7 @@ QString Qt4BuildConfiguration::extractSpecFromArguments(QString *args,
     if (QFileInfo(parsedSpec).isRelative()) {
         if(QFileInfo(directory + QLatin1Char('/') + parsedSpec).exists()) {
             parsedSpec = QDir::cleanPath(directory + QLatin1Char('/') + parsedSpec);
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
             parsedSpec = parsedSpec.toLower();
 #endif
         } else {
@@ -620,7 +620,7 @@ QString Qt4BuildConfiguration::extractSpecFromArguments(QString *args,
             parsedSpec = parsedSpec.mid(sourceMkSpecPath.length() + 1);
         }
     }
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     parsedSpec = parsedSpec.toLower();
 #endif
     return parsedSpec;

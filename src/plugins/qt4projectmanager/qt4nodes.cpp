@@ -319,7 +319,7 @@ struct InternalNode
                 fileWithoutPrefix = file;
             }
             QStringList parts = fileWithoutPrefix.split(separator, QString::SkipEmptyParts);
-#ifndef Q_OS_WIN
+#if !defined(Q_OS_WIN) && !defined(Q_OS_OS2)
             if (!isRelative && parts.count() > 0)
                 parts[0].prepend(separator);
 #endif
@@ -2049,7 +2049,7 @@ TargetInformation Qt4ProFileNode::targetInformation(ProFileReader *reader) const
     result.executable = QDir::cleanPath(wd + QLatin1Char('/') + result.target);
     //qDebug() << "##### updateTarget sets:" << result.workingDir << result.executable;
 
-#if defined (Q_OS_WIN)
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     result.executable += QLatin1String(".exe");
 #endif
     result.valid = true;
