@@ -65,7 +65,7 @@ bool IoUtils::isRelativePath(const QString &path)
 {
     if (path.startsWith(QLatin1Char('/')))
         return false;
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     if (path.startsWith(QLatin1Char('\\')))
         return false;
     // Unlike QFileInfo, this won't accept a relative path with a drive letter.
@@ -94,7 +94,7 @@ QString IoUtils::resolvePath(const QString &baseDir, const QString &fileName)
 inline static bool isSpecialChar(ushort c)
 {
     // Chars that should be quoted (TM). This includes:
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     // - control chars & space
     // - the shell meta chars "&()<>^|
     // - the potential separators ,;=
@@ -127,7 +127,7 @@ QString IoUtils::shellQuote(const QString &arg)
 
     QString ret(arg);
     if (hasSpecialChars(ret)) {
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
         // Quotes are escaped and their preceding backslashes are doubled.
         // It's impossible to escape anything inside a quoted string on cmd
         // level, so the outer quoting must be "suspended".

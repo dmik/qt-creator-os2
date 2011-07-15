@@ -15,6 +15,11 @@
   <name>Mac</name>
  </scope>
 
+ <scope>
+  <id>os2</id>
+  <name>OS/2</name>
+ </scope>
+
  <variable multiple="false">
   <id>TARGET</id>
   <name>Output Target</name>
@@ -106,5 +111,5 @@
     <name>Qt3Support module</name>
   </value>
  </variable>
- 
+
 </proiteminfo>

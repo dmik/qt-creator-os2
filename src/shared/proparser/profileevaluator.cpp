@@ -52,7 +52,7 @@
 # include <QtCore/QThreadPool>
 #endif
 
-#ifdef Q_OS_UNIX
+#if defined(Q_OS_UNIX) || defined(Q_OS_OS2)
 #include <unistd.h>
 #include <sys/utsname.h>
 #else
@@ -86,7 +86,7 @@ using namespace ProStringConstants;
 
 ProFileOption::ProFileOption()
 {
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) || defined(Q_OS_OS2)
     dirlist_sep = QLatin1Char(';');
     dir_sep = QLatin1Char('\\');
 #else
@@ -134,6 +134,9 @@ void ProFileOption::setCommandLineArguments(const QStringList &args)
             } else if (arg == QLatin1String("-macx")) {
                 host_mode = HOST_MACX_MODE;
                 target_mode = TARG_MACX_MODE;
+            } else if (arg == QLatin1String("-os2")) {
+                host_mode = HOST_OS2_MODE;
+                target_mode = TARG_OS2_MODE;
             }
         } else if (arg.contains(QLatin1Char('='))) {
             if (after)
@@ -156,7 +159,7 @@ void ProFileOption::setCommandLineArguments(const QStringList &args)
 
 void ProFileOption::applyHostMode()
 {
-   if (host_mode == HOST_WIN_MODE) {
+   if (host_mode == HOST_WIN_MODE || host_mode == HOST_OS2_MODE) {
        dir_sep = fL1S("\\");
    } else {
        dir_sep = fL1S("/");
@@ -320,6 +323,7 @@ static struct {
     QString strmacx;
     QString strmac;
     QString strwin32;
+    QString stros2;
     QString strsymbian;
     ProString strCONFIG;
     ProString strARGS;
@@ -349,6 +353,7 @@ void ProFileEvaluator::Private::initStatics()
     statics.strmacx = QLatin1String("macx");
     statics.strmac = QLatin1String("mac");
     statics.strwin32 = QLatin1String("win32");
+    statics.stros2 = QLatin1String("os2");
     statics.strsymbian = QLatin1String("symbian");
     statics.strCONFIG = ProString("CONFIG");
     statics.strARGS = ProString("ARGS");
@@ -654,7 +659,7 @@ static QString fixPathToLocalOS(const QString &str)
     if (string.length() > 2 && string.at(0).isLetter() && string.at(1) == QLatin1Char(':'))
         string[0] = string[0].toLower();
 
-#if defined(Q_OS_WIN32)
+#if defined(Q_OS_WIN32) || defined(Q_OS_OS2)
     string.replace(QLatin1Char('/'), QLatin1Char('\\'));
 #else
     string.replace(QLatin1Char('\\'), QLatin1Char('/'));
@@ -1421,6 +1426,9 @@ QStringList ProFileEvaluator::Private::qmakeFeaturePaths() const
     case ProFileOption::TARG_SYMBIAN_MODE:
         concat << QLatin1String("/features/symbian");
         break;
+    case ProFileOption::TARG_OS2_MODE:
+        concat << QLatin1String("/features/os2");
+        break;
     }
     concat << features_concat;
 
@@ -1832,6 +1840,9 @@ bool ProFileEvaluator::Private::modesForGenerator(const QString &gen,
         *host_mode = ProFileOption::HOST_WIN_MODE;
 #endif
         *target_mode = ProFileOption::TARG_SYMBIAN_MODE;
+    } else if (gen == fL1S("GNUMAKE")) {
+        *host_mode = ProFileOption::HOST_OS2_MODE;
+        *target_mode = ProFileOption::TARG_OS2_MODE;
     } else {
         evalError(fL1S("Unknown generator specified: %1").arg(gen));
         return false;
@@ -1868,6 +1879,8 @@ void ProFileEvaluator::Private::validateModes() const
                         m_option->target_mode = ProFileOption::TARG_SYMBIAN_MODE;
                     else if (os == statics.strwin32)
                         m_option->target_mode = ProFileOption::TARG_WIN_MODE;
+                    else if (os == statics.stros2)
+                        m_option->target_mode = ProFileOption::TARG_OS2_MODE;
                     else
                         evalError(fL1S("Unknown target platform specified: %1").arg(os));
                 } else {
@@ -1900,6 +1913,9 @@ bool ProFileEvaluator::Private::isActiveConfig(const QString &config, bool regex
     } else if (config == statics.strwin32) {
         validateModes();
         return m_option->target_mode == ProFileOption::TARG_WIN_MODE;
+    } else if (config == statics.stros2) {
+        validateModes();
+        return m_option->target_mode == ProFileOption::TARG_OS2_MODE;
     }
 
     if (regex && (config.contains(QLatin1Char('*')) || config.contains(QLatin1Char('?')))) {
@@ -3081,7 +3097,7 @@ ProStringList ProFileEvaluator::Private::values(const ProString &variableName) c
                 break;
             }
             break;
-#elif defined(Q_OS_UNIX)
+#elif defined(Q_OS_UNIX) || defined(Q_OS_OS2)
         case V_QMAKE_HOST_os:
         case V_QMAKE_HOST_name:
         case V_QMAKE_HOST_version:
