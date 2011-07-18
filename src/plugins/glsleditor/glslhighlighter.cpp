@@ -124,10 +124,10 @@ void Highlighter::highlightBlock(const QString &text)
                       m_formats[GLSLVisualWhitespace]);
         }
 
-        if (tk.is(GLSL::Parser::T_LEFT_PAREN) || tk.is(GLSL::Parser::T_LEFT_BRACE) || tk.is(GLSL::Parser::T_LEFT_BRACKET)) {
+        if (tk.is(GLSL::Parser::TOK_LEFT_PAREN) || tk.is(GLSL::Parser::TOK_LEFT_BRACE) || tk.is(GLSL::Parser::TOK_LEFT_BRACKET)) {
             const QChar c = text.at(tk.begin());
             parentheses.append(Parenthesis(Parenthesis::Opened, c, tk.begin()));
-            if (tk.is(GLSL::Parser::T_LEFT_BRACE)) {
+            if (tk.is(GLSL::Parser::TOK_LEFT_BRACE)) {
                 ++braceDepth;
 
                 // if a folding block opens at the beginning of a line, treat the entire line
@@ -137,14 +137,14 @@ void Highlighter::highlightBlock(const QString &text)
                     BaseTextDocumentLayout::userData(currentBlock())->setFoldingStartIncluded(true);
                 }
             }
-        } else if (tk.is(GLSL::Parser::T_RIGHT_PAREN) || tk.is(GLSL::Parser::T_RIGHT_BRACE) || tk.is(GLSL::Parser::T_RIGHT_BRACKET)) {
+        } else if (tk.is(GLSL::Parser::TOK_RIGHT_PAREN) || tk.is(GLSL::Parser::TOK_RIGHT_BRACE) || tk.is(GLSL::Parser::TOK_RIGHT_BRACKET)) {
             const QChar c = text.at(tk.begin());
             parentheses.append(Parenthesis(Parenthesis::Closed, c, tk.begin()));
-            if (tk.is(GLSL::Parser::T_RIGHT_BRACE)) {
+            if (tk.is(GLSL::Parser::TOK_RIGHT_BRACE)) {
                 --braceDepth;
                 if (braceDepth < foldingIndent) {
                     // unless we are at the end of the block, we reduce the folding indent
-                    if (i == tokens.size()-1 || tokens.at(i+1).is(GLSL::Parser::T_SEMICOLON))
+                    if (i == tokens.size()-1 || tokens.at(i+1).is(GLSL::Parser::TOK_SEMICOLON))
                         BaseTextDocumentLayout::userData(currentBlock())->setFoldingEndIncluded(true);
                     else
                         foldingIndent = qMin(braceDepth, foldingIndent);
@@ -157,22 +157,22 @@ void Highlighter::highlightBlock(const QString &text)
         if (highlightAsPreprocessor)
             highlightAsPreprocessor = false;
 
-        if (false /* && i == 0 && tk.is(GLSL::Parser::T_POUND)*/) {
+        if (false /* && i == 0 && tk.is(GLSL::Parser::TOK_POUND)*/) {
             highlightLine(text, tk.begin(), tk.length, m_formats[GLSLPreprocessorFormat]);
             highlightAsPreprocessor = true;
 
         } else if (highlightCurrentWordAsPreprocessor && isPPKeyword(text.midRef(tk.begin(), tk.length)))
             setFormat(tk.begin(), tk.length, m_formats[GLSLPreprocessorFormat]);
 
-        else if (tk.is(GLSL::Parser::T_NUMBER))
+        else if (tk.is(GLSL::Parser::TOK_NUMBER))
             setFormat(tk.begin(), tk.length, m_formats[GLSLNumberFormat]);
 
-        else if (tk.is(GLSL::Parser::T_COMMENT)) {
+        else if (tk.is(GLSL::Parser::TOK_COMMENT)) {
             highlightLine(text, tk.begin(), tk.length, m_formats[GLSLCommentFormat]);
 
             // we need to insert a close comment parenthesis, if
             //  - the line starts in a C Comment (initalState != 0)
-            //  - the first token of the line is a T_COMMENT (i == 0 && tk.is(T_COMMENT))
+            //  - the first token of the line is a TOK_COMMENT (i == 0 && tk.is(TOK_COMMENT))
             //  - is not a continuation line (tokens.size() > 1 || ! state)
             if (initialState && i == 0 && (tokens.size() > 1 || ! state)) {
                 --braceDepth;
@@ -188,11 +188,11 @@ void Highlighter::highlightBlock(const QString &text)
                 initialState = 0;
             }
 
-        } else if (tk.is(GLSL::Parser::T_IDENTIFIER)) {
+        } else if (tk.is(GLSL::Parser::TOK_IDENTIFIER)) {
             int kind = lex.findKeyword(data.constData() + tk.position, tk.length);
-            if (kind == GLSL::Parser::T_RESERVED)
+            if (kind == GLSL::Parser::TOK_RESERVED)
                 setFormat(tk.position, tk.length, m_formats[GLSLReservedKeyword]);
-            else if (kind != GLSL::Parser::T_IDENTIFIER)
+            else if (kind != GLSL::Parser::TOK_IDENTIFIER)
                 setFormat(tk.position, tk.length, m_formats[GLSLKeywordFormat]);
         }
     }
@@ -363,20 +363,20 @@ void Highlighter::highlightBlock(const QString &text)
     for (int i = 0; i < tokens.size(); ++i) {
         const GLSL::Token &tk = tokens.at(i);
 
-        if (tk.is(GLSL::Parser::T_NUMBER))
+        if (tk.is(GLSL::Parser::TOK_NUMBER))
             setFormat(tk.position, tk.length, m_formats[GLSLNumberFormat]);
-        else if (tk.is(GLSL::Parser::T_COMMENT))
+        else if (tk.is(GLSL::Parser::TOK_COMMENT))
             setFormat(tk.position, tk.length, Qt::darkGreen); // ### FIXME: m_formats[GLSLCommentFormat]);
-        else if (tk.is(GLSL::Parser::T_IDENTIFIER)) {
+        else if (tk.is(GLSL::Parser::TOK_IDENTIFIER)) {
             int kind = lex.findKeyword(data.constData() + tk.position, tk.length);
-            if (kind == GLSL::Parser::T_RESERVED)
+            if (kind == GLSL::Parser::TOK_RESERVED)
                 setFormat(tk.position, tk.length, m_formats[GLSLReservedKeyword]);
-            else if (kind != GLSL::Parser::T_IDENTIFIER)
+            else if (kind != GLSL::Parser::TOK_IDENTIFIER)
                 setFormat(tk.position, tk.length, m_formats[GLSLKeywordFormat]);
-        } else if (tk.is(GLSL::Parser::T_LEFT_PAREN) || tk.is(GLSL::Parser::T_LEFT_BRACE) || tk.is(GLSL::Parser::T_LEFT_BRACKET)) {
+        } else if (tk.is(GLSL::Parser::TOK_LEFT_PAREN) || tk.is(GLSL::Parser::TOK_LEFT_BRACE) || tk.is(GLSL::Parser::TOK_LEFT_BRACKET)) {
             const QChar c = text.at(tk.begin());
             parentheses.append(Parenthesis(Parenthesis::Opened, c, tk.begin()));
-            if (tk.is(GLSL::Parser::T_LEFT_BRACE)) {
+            if (tk.is(GLSL::Parser::TOK_LEFT_BRACE)) {
                 ++braceDepth;
 
                 // if a folding block opens at the beginning of a line, treat the entire line
@@ -386,14 +386,14 @@ void Highlighter::highlightBlock(const QString &text)
 //                    BaseTextDocumentLayout::userData(currentBlock())->setFoldingStartIncluded(true);
 //                }
             }
-        } else if (tk.is(GLSL::Parser::T_RIGHT_PAREN) || tk.is(GLSL::Parser::T_RIGHT_BRACE) || tk.is(GLSL::Parser::T_RIGHT_BRACKET)) {
+        } else if (tk.is(GLSL::Parser::TOK_RIGHT_PAREN) || tk.is(GLSL::Parser::TOK_RIGHT_BRACE) || tk.is(GLSL::Parser::TOK_RIGHT_BRACKET)) {
             const QChar c = text.at(tk.begin());
             parentheses.append(Parenthesis(Parenthesis::Closed, c, tk.begin()));
-            if (tk.is(GLSL::Parser::T_RIGHT_BRACE)) {
+            if (tk.is(GLSL::Parser::TOK_RIGHT_BRACE)) {
                 --braceDepth;
                 if (braceDepth < foldingIndent) {
                     // unless we are at the end of the block, we reduce the folding indent
-                    if (i == tokens.size()-1 || tokens.at(i+1).is(GLSL::Parser::T_SEMICOLON))
+                    if (i == tokens.size()-1 || tokens.at(i+1).is(GLSL::Parser::TOK_SEMICOLON))
                         BaseTextDocumentLayout::userData(currentBlock())->setFoldingEndIncluded(true);
                     else
                         foldingIndent = qMin(braceDepth, foldingIndent);

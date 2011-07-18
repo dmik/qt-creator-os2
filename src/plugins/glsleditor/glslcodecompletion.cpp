@@ -244,11 +244,11 @@ void FunctionArgumentWidget::updateArgumentHighlight()
     } while (tk.isNot(GLSL::Parser::EOF_SYMBOL));
     for (int i = 0; i < tokens.count(); ++i) {
         const GLSL::Token &tk = tokens.at(i);
-        if (tk.is(GLSL::Parser::T_LEFT_PAREN))
+        if (tk.is(GLSL::Parser::TOK_LEFT_PAREN))
             ++parcount;
-        else if (tk.is(GLSL::Parser::T_RIGHT_PAREN))
+        else if (tk.is(GLSL::Parser::TOK_RIGHT_PAREN))
             --parcount;
-        else if (! parcount && tk.is(GLSL::Parser::T_COMMA))
+        else if (! parcount && tk.is(GLSL::Parser::TOK_COMMA))
             ++argnr;
     }
 
