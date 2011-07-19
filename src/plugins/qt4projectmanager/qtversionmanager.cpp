@@ -1485,6 +1485,8 @@ void QtVersion::updateAbiAndMkspec() const
                 const QList<QByteArray> &temp = line.split('=');
                 if (temp.size() == 2) {
                     QString possibleFullPath = temp.at(1).trimmed();
+                    // the QMAKESPEC_ORIGINAL path may be relative to the .conf file's dir
+                    possibleFullPath = QDir(mkspecFullPath).absoluteFilePath(possibleFullPath);
                     // We sometimes get a mix of different slash styles here...
                     possibleFullPath = QDir::cleanPath(possibleFullPath);
                     if (QFileInfo(possibleFullPath).exists()) // Only if the path exists
