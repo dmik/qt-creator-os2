@@ -1,0 +1,10 @@
+macx {
+  DESTDIR = $$IDE_LIBRARY_PATH/QmlDesigner
+} else {
+  DESTDIR = $$IDE_BUILD_TREE/$$IDE_LIBRARY_BASENAME/qmldesigner
+}
+
+!macx {
+    dlltarget.path = /$$IDE_LIBRARY_BASENAME/qmldesigner
+    INSTALLS += dlltarget
+}
