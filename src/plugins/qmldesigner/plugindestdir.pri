@@ -5,6 +5,6 @@ macx {
 }
 
 !macx {
-    dlltarget.path = /$$IDE_LIBRARY_BASENAME/qmldesigner
-    INSTALLS += dlltarget
+    target.path = /$$IDE_LIBRARY_BASENAME/qmldesigner
+    INSTALLS += target
 }
