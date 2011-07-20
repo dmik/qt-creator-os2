@@ -1,4 +1,5 @@
 TARGET = extrasplugin
+os2:TARGET_SHORT = extrapl
 TEMPLATE = lib
 CONFIG += plugin
 
