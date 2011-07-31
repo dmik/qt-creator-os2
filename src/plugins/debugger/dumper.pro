@@ -2,6 +2,14 @@
 
 include(../../qtcreatorlibrary.pri)
 
+!macx {
+    win32|os2 {
+        INSTALLS -= dlltarget
+    } else {
+        INSTALLS -= target
+    }
+}
+
 TEMPLATE = lib
 TARGET = DebuggingHelper
 os2:TARGET_SHORT = DbgHlpr
