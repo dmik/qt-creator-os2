@@ -900,8 +900,15 @@ void FileManager::checkForReload()
             Internal::FileStateItem expectedState = d->m_states.value(fileName).expected;
             Internal::FileStateItem lastState = d->m_states.value(fileName).lastUpdatedState.value(file);
             // did the file actually change?
-            if (lastState.modified == currentState.modified && lastState.permissions == currentState.permissions)
+            if (lastState.modified == currentState.modified && lastState.permissions == currentState.permissions) {
+                // Most likely the file was externally removed and then put back
+                // before we got a chance to proceed. Add it again to the watcher
+                // from where it was automatically removed, otherwise we won't get
+                /// any notifications for it any more.
+                removeFileInfo(file);
+                addFileInfo(file);
                 continue;
+            }
             changed = true;
 
             // was it only a permission change?
