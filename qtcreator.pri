@@ -122,8 +122,6 @@ macx {
     !isEqual(IDE_SOURCE_TREE, $$IDE_BUILD_TREE):copydata = 1
 }
 
-os2:INCLUDEPATH += .
-
 INCLUDEPATH += \
     $$IDE_SOURCE_TREE/src/libs \
     $$IDE_SOURCE_TREE/tools \
