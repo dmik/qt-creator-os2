@@ -10,10 +10,11 @@ macx:CONFIG -= app_bundle
 isEmpty(vcproj) {
     os2 {
         QMAKE_LINK = @rem IGNORE THIS LINE
-        QMAKE_EXEPACK = @rem IGNORE THIS LINE
+        CONFIG -= sym exepack
+    } else {
+        QMAKE_LINK = @: IGNORE THIS LINE
+        OBJECTS_DIR =
     }
-    else:QMAKE_LINK = @: IGNORE THIS LINE
-    OBJECTS_DIR =
     win32:CONFIG -= embed_manifest_exe
 } else {
     CONFIG += console

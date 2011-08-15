@@ -6,8 +6,13 @@ LIBS =
 macx:CONFIG -= app_bundle
 
 isEmpty(vcproj) {
-    QMAKE_LINK = @: IGNORE THIS LINE
-    OBJECTS_DIR =
+    os2 {
+        QMAKE_LINK = @rem IGNORE THIS LINE
+        CONFIG -= sym exepack
+    } else {
+        QMAKE_LINK = @: IGNORE THIS LINE
+        OBJECTS_DIR =
+    }
     win32:CONFIG -= embed_manifest_exe
 } else {
     CONFIG += console
