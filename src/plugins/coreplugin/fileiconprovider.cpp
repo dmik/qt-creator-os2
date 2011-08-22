@@ -159,7 +159,9 @@ QPixmap FileIconProvider::overlayIcon(QStyle::StandardPixmap baseIcon, const QIc
 {
     QPixmap iconPixmap = qApp->style()->standardIcon(baseIcon).pixmap(size);
     QPainter painter(&iconPixmap);
-    painter.drawPixmap(0, 0, overlayIcon.pixmap(size));
+    QPixmap overlayPixmap = overlayIcon.pixmap(size);
+    painter.drawPixmap((size.width() - overlayPixmap.width()) / 2,
+                       (size.height() - overlayPixmap.height()) / 2, overlayPixmap);
     painter.end();
     return iconPixmap;
 }
@@ -178,7 +180,7 @@ void FileIconProvider::registerIconOverlayForSuffix(const QIcon &icon,
 
     QTC_ASSERT(!icon.isNull() && !suffix.isEmpty(), return)
 
-    const QPixmap fileIconPixmap = overlayIcon(QStyle::SP_FileIcon, icon, QSize(16, 16));
+    const QPixmap fileIconPixmap = overlayIcon(QStyle::SP_FileIcon, icon, iconSize());
     // replace old icon, if it exists
     const CacheIterator it = findBySuffix(suffix, d->m_cache.begin(), d->m_cache.end());
     if (it == d->m_cache.end()) {
@@ -206,6 +208,15 @@ FileIconProvider *FileIconProvider::instance()
     if (!FileIconProviderPrivate::m_instance)
         FileIconProviderPrivate::m_instance = new FileIconProvider;
     return FileIconProviderPrivate::m_instance;
+}
+
+/*!
+  Returns the native size of the small icon.
+  */
+QSize FileIconProvider::iconSize()
+{
+    int s = qApp->style()->pixelMetric(QStyle::PM_SmallIconSize);
+    return QSize(s, s);
 }
 
 } // namespace core

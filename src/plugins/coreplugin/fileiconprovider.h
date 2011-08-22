@@ -69,6 +69,8 @@ public:
 
     static FileIconProvider *instance();
 
+    static QSize iconSize();
+
 private:
     FileIconProviderPrivate *d;
 };

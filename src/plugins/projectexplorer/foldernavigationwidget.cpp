@@ -149,7 +149,7 @@ FolderNavigationWidget::FolderNavigationWidget(QWidget *parent)
 #endif
     m_fileSystemModel->setFilter(filters);
     m_filterModel->setSourceModel(m_fileSystemModel);
-    m_listView->setIconSize(QSize(16,16));
+    m_listView->setIconSize(Core::FileIconProvider::iconSize());
     m_listView->setModel(m_filterModel);
     m_listView->setFrameStyle(QFrame::NoFrame);
     m_listView->setAttribute(Qt::WA_MacShowFocusRect, false);
