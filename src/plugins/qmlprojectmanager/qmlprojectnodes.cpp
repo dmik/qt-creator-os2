@@ -53,7 +53,7 @@ QmlProjectNode::QmlProjectNode(QmlProject *project, Core::IFile *projectFile)
 {
     setDisplayName(QFileInfo(projectFile->fileName()).completeBaseName());
     // make overlay
-    const QSize desiredSize = QSize(16, 16);
+    const QSize desiredSize = Core::FileIconProvider::iconSize();
     const QIcon projectBaseIcon(QLatin1String(":/qmlproject/images/qmlfolder.png"));
     const QPixmap projectPixmap = Core::FileIconProvider::overlayIcon(QStyle::SP_DirIcon,
                                                                       projectBaseIcon,

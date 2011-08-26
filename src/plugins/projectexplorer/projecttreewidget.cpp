@@ -43,6 +43,7 @@
 #include <coreplugin/icore.h>
 #include <coreplugin/editormanager/editormanager.h>
 #include <coreplugin/icontext.h>
+#include <coreplugin/fileiconprovider.h>
 
 #include <utils/qtcassert.h>
 #include <utils/navigationtreeview.h>
@@ -71,6 +72,7 @@ class ProjectTreeView : public Utils::NavigationTreeView
 public:
     ProjectTreeView()
     {
+        setIconSize(Core::FileIconProvider::iconSize());
         setEditTriggers(QAbstractItemView::EditKeyPressed);
         setContextMenuPolicy(Qt::CustomContextMenu);
 //        setExpandsOnDoubleClick(false);

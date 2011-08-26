@@ -127,7 +127,7 @@ Q_GLOBAL_STATIC_WITH_INITIALIZER(Qt4NodeStaticData, qt4NodeStaticData, {
     x->fileTypeData.reserve(count);
 
     // Overlay the SP_DirIcon with the custom icons
-    const QSize desiredSize = QSize(16, 16);
+    const QSize desiredSize = Core::FileIconProvider::iconSize();
 
     for (unsigned i = 0 ; i < count; i++) {
         const QIcon overlayIcon = QIcon(QLatin1String(fileTypeDataStorage[i].icon));

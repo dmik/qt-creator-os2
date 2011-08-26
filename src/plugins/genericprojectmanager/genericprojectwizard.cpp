@@ -34,6 +34,7 @@
 
 #include <coreplugin/icore.h>
 #include <coreplugin/mimedatabase.h>
+#include <coreplugin/fileiconprovider.h>
 #include <projectexplorer/projectexplorerconstants.h>
 #include <projectexplorer/customwizard/customwizard.h>
 
@@ -106,7 +107,9 @@ Core::BaseFileWizardParameters GenericProjectWizard::parameters()
         QPixmap icon(22, 22);
         icon.fill(Qt::transparent);
         QPainter p(&icon);
-        p.drawPixmap(3, 3, 16, 16, qApp->style()->standardIcon(QStyle::SP_DirIcon).pixmap(16));
+        QSize s = Core::FileIconProvider::iconSize();
+        p.drawPixmap((22 - s.width()) / 2, (22 - s.height()) / 2,
+                      s.width(), s.height(), qApp->style()->standardIcon(QStyle::SP_DirIcon).pixmap(s.width()));
         parameters.setIcon(icon);
     }
     parameters.setDisplayName(tr("Import Existing Project"));
