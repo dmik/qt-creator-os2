@@ -72,7 +72,7 @@
 #include <QtGui/QToolButton>
 
 static const char *const kGitDirectoryC = ".git";
-static const char *const kBranchIndicatorC = "# On branch";
+static const char *const kBranchIndicatorC = "On branch";
 
 namespace Git {
 namespace Internal {
@@ -1629,7 +1629,7 @@ GitClient::StatusResult GitClient::gitStatus(const QString &workingDirectory,
     if (onBranch)
         *onBranch = branchKnown;
     // Is it something really fatal?
-    if (!statusRc && !branchKnown && !outputText.contains("# Not currently on any branch.")) {
+    if (!statusRc && !branchKnown && !outputText.contains("Not currently on any branch.")) {
         if (errorMessage) {
             const QString error = commandOutputFromLocal8Bit(errorText);
             *errorMessage = tr("Unable to obtain the status: %1").arg(error);

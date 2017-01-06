@@ -98,7 +98,7 @@ void CommitData::clear()
 CommitData::StateFilePair splitStateFileSpecification(const QString &line)
 {
     QPair<QString, QString> rc;
-    const int statePos = 2;
+    const int statePos = 1;
     const int colonIndex = line.indexOf(QLatin1Char(':'), statePos);
     if (colonIndex == -1)
         return rc;
@@ -144,14 +144,14 @@ bool CommitData::parseFilesFromStatus(const QString &output)
 
     const QStringList lines = output.split(QLatin1Char('\n'));
     const QString branchIndicator = QLatin1String(kBranchIndicatorC);
-    const QString commitIndicator = QLatin1String("# Changes to be committed:");
-    const QString notUpdatedIndicator = QLatin1String("# Changed but not updated:");
-    const QString notUpdatedIndicatorGit174 = QLatin1String("# Changes not staged for commit:");
-    const QString untrackedIndicator = QLatin1String("# Untracked files:");
+    const QString commitIndicator = QLatin1String("Changes to be committed:");
+    const QString notUpdatedIndicator = QLatin1String("Changed but not updated:");
+    const QString notUpdatedIndicatorGit174 = QLatin1String("Changes not staged for commit:");
+    const QString untrackedIndicator = QLatin1String("Untracked files:");
 
     State s = None;
     // Match added/changed-not-updated files: "#<tab>modified: foo.cpp"
-    QRegExp filesPattern(QLatin1String("#\\t[^:]+:\\s+.+"));
+    QRegExp filesPattern(QLatin1String("\\t[^:]+:\\s+.+"));
     QTC_ASSERT(filesPattern.isValid(), return false);
 
     const QStringList::const_iterator cend = lines.constEnd();
@@ -172,7 +172,7 @@ bool CommitData::parseFilesFromStatus(const QString &output)
         if (line.startsWith(untrackedIndicator)) {
             // Now match untracked: "#<tab>foo.cpp"
             s = UntrackedFiles;
-            filesPattern = QRegExp(QLatin1String("#\\t.+"));
+            filesPattern = QRegExp(QLatin1String("\\t.+"));
             QTC_ASSERT(filesPattern.isValid(), return false);
             continue;
         }

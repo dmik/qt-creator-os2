@@ -9,6 +9,8 @@
 *.obj
 *.orig
 *.rej
+*.res
+*.rsp
 *.so
 *_pch.h.cpp
 *_resource.rc
