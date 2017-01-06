@@ -72,7 +72,7 @@
 #include <QtGui/QToolButton>
 
 static const char *const kGitDirectoryC = ".git";
-static const char *const kBranchIndicatorC = "# On branch";
+static const char *const kBranchIndicatorC = "On branch";
 
 namespace Git {
 namespace Internal {
@@ -1411,7 +1411,13 @@ GitCommand *GitClient::createCommand(const QString &workingDirectory,
         qDebug() << Q_FUNC_INFO << workingDirectory << editor;
 
     VCSBase::VCSBaseOutputWindow *outputWindow = VCSBase::VCSBaseOutputWindow::instance();
-    GitCommand* command = new GitCommand(binary(), workingDirectory, processEnvironment(), QVariant(editorLineNumber));
+
+    // forces en_US messages in git output
+    QProcessEnvironment m_environment;
+    m_environment = processEnvironment();
+    m_environment.insert("LANG", "en_US");
+
+    GitCommand* command = new GitCommand(binary(), workingDirectory, m_environment, QVariant(editorLineNumber));
     if (editor)
         connect(command, SIGNAL(finished(bool,int,QVariant)), editor, SLOT(commandFinishedGotoLine(bool,int,QVariant)));
     if (outputToWindow) {
@@ -1513,9 +1519,14 @@ bool GitClient::fullySynchronousGit(const QString &workingDirectory,
     if (logCommandToWindow)
         outputWindow()->appendCommand(workingDirectory, m_binaryPath, gitArguments);
 
+    // forces en_US messages in git output
+    QProcessEnvironment m_environment;
+    m_environment = processEnvironment();
+    m_environment.insert("LANG", "en_US");
+
     QProcess process;
     process.setWorkingDirectory(workingDirectory);
-    process.setProcessEnvironment(processEnvironment());
+    process.setProcessEnvironment(m_environment);
 
     process.start(binary(), gitArguments);
     process.closeWriteChannel();
@@ -1629,7 +1640,7 @@ GitClient::StatusResult GitClient::gitStatus(const QString &workingDirectory,
     if (onBranch)
         *onBranch = branchKnown;
     // Is it something really fatal?
-    if (!statusRc && !branchKnown && !outputText.contains("# Not currently on any branch.")) {
+    if (!statusRc && !branchKnown && !outputText.contains("Not currently on any branch.")) {
         if (errorMessage) {
             const QString error = commandOutputFromLocal8Bit(errorText);
             *errorMessage = tr("Unable to obtain the status: %1").arg(error);
